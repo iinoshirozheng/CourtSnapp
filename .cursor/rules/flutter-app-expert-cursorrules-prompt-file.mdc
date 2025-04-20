@@ -1,0 +1,227 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+// Cursor Rules for Flutter App Development
+
+// Flexibility Notice
+// Note: This is a recommended project structure, but be flexible and adapt to existing project structures.
+// Do not enforce these structural patterns if the project follows a different organization.
+// Focus on maintaining consistency with the existing project architecture while applying Flutter best practices.
+# Refer to
+- [flutterengineering-book.pdf](mdc:docs/flutterengineering-book.pdf)
+
+// Flutter Best Practices
+const flutterBestPractices = [
+  "Adapt to existing project architecture while maintaining clean code principles",
+  "Use Flutter 3.x features and Material 3 design",
+  "Implement clean architecture with BLoC pattern",
+  "Follow proper state management principles",
+  "Use proper dependency injection",
+  "Implement proper error handling",
+  "Follow platform-specific design guidelines",
+  "Use proper localization techniques",
+];
+
+// Project Structure
+const projectStructure = `
+lib/
+  core/
+    constants/
+    theme/
+    utils/
+    widgets/
+  features/
+    feature_name/
+      data/
+        datasources/
+        models/
+        repositories/
+      domain/
+        entities/
+        repositories/
+        usecases/
+      presentation/
+        bloc/
+        pages/
+        widgets/
+  l10n/
+  main.dart
+
+test/
+  unit/
+  widget/
+  integration/
+`;
+
+// Coding Guidelines
+const codingGuidelines = [
+  "Use proper null safety practices",
+  "Implement proper error handling with Either type",
+  "Follow proper naming conventions",
+  "Use proper widget composition",
+  "Implement proper routing using GoRouter",
+  "Use proper form validation",
+  "Follow proper state management with BLoC",
+  "Implement proper dependency injection using GetIt",
+  "Use proper asset management",
+  "Follow proper testing practices",
+];
+
+// Widget Guidelines
+const widgetGuidelines = [
+  "Keep widgets small and focused",
+  "Use const constructors when possible",
+  "Implement proper widget keys",
+  "Follow proper layout principles",
+  "Use proper widget lifecycle methods",
+  "Implement proper error boundaries",
+  "Use proper performance optimization techniques",
+  "Follow proper accessibility guidelines",
+];
+
+// Performance Guidelines
+const performanceGuidelines = [
+  "Use proper image caching",
+  "Implement proper list view optimization",
+  "Use proper build methods optimization",
+  "Follow proper state management patterns",
+  "Implement proper memory management",
+  "Use proper platform channels when needed",
+  "Follow proper compilation optimization techniques",
+];
+
+// Testing Guidelines
+const testingGuidelines = [
+  "Write unit tests for business logic",
+  "Implement widget tests for UI components",
+  "Use integration tests for feature testing",
+  "Implement proper mocking strategies",
+  "Use proper test coverage tools",
+  "Follow proper test naming conventions",
+  "Implement proper CI/CD testing",
+];
+
+// Key Principles
+const keyPrinciples = [
+  "Write concise, technical Dart code with accurate examples.",
+  "Use functional and declarative programming patterns where appropriate.",
+  "Prefer composition over inheritance.",
+  "Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError).",
+];
+
+// Dart/Flutter Guidelines
+const dartFlutterGuidelines = [
+  "Use const constructors for immutable widgets.",
+  "Leverage Freezed for immutable state classes and unions.",
+  "Use arrow syntax for simple functions and methods.",
+  "Prefer expression bodies for one-line getters and setters.",
+  "Use trailing commas for better formatting and diffs.",
+];
+
+// Error Handling and Validation
+const errorHandlingGuidelines = [
+  "Implement error handling in views using SelectableText.rich instead of SnackBars.",
+  "Display errors in SelectableText.rich with red color for visibility.",
+  "Handle empty states within the displaying screen.",
+  "Manage error handling and loading states within Cubit states.",
+];
+
+// Bloc-Specific Guidelines
+const blocSpecificGuidelines = [
+  "Use Cubit for managing simple state and Bloc for complex event-driven state management.",
+  "Extend states with Freezed for immutability.",
+  "Use descriptive and meaningful event names for Bloc.",
+  "Handle state transitions and side effects in Bloc's mapEventToState.",
+  "Prefer context.read() or context.watch() for accessing Cubit/Bloc states in widgets.",
+];
+
+// Firebase Integration Guidelines
+const firebaseIntegrationGuidelines = [
+  "Use Firebase Authentication for user sign-in, sign-up, and password management.",
+  "Integrate Firestore for real-time database interactions with structured and normalized data.",
+  "Implement Firebase Storage for file uploads and downloads with proper error handling.",
+  "Use Firebase Analytics for tracking user behavior and app performance.",
+  "Handle Firebase exceptions with detailed error messages and appropriate logging.",
+  "Secure database rules in Firestore and Storage based on user roles and permissions.",
+];
+
+// Additional Performance Optimization
+const additionalPerformanceGuidelines = [
+  "Use const widgets where possible to optimize rebuilds.",
+  "Implement ListView.builder for large lists.",
+  "Use AssetImage for static images and cached_network_image for remote images.",
+  "Optimize Firebase queries by using indexes and limiting query results.",
+];
+
+// Key Conventions
+const keyConventions = [
+  "Use GoRouter or auto_route for navigation and deep linking.",
+  "Optimize for Flutter performance metrics (first meaningful paint, time to interactive).",
+  "Prefer stateless widgets: Use BlocBuilder for widgets that depend on state, and BlocListener for side effects.",
+];
+
+// UI and Styling
+const uiStylingGuidelines = [
+  "Use Flutter's built-in widgets and create custom widgets.",
+  "Implement responsive design using LayoutBuilder or MediaQuery.",
+  "Use themes for consistent styling across the app.",
+  "Use Theme.of(context).textTheme.titleLarge instead of headline6, and headlineSmall instead of headline5.",
+];
+
+// Model and Database Conventions
+const modelDatabaseConventions = [
+  "Include createdAt, updatedAt, and isDeleted fields in Firestore documents.",
+  "Use @JsonSerializable(fieldRename: FieldRename.snake) for models.",
+  "Implement @JsonKey(includeFromJson: true, includeToJson: false) for read-only fields.",
+];
+
+// Widgets and UI Components
+const widgetUiComponentsGuidelines = [
+  "Create small, private widget classes instead of methods like _buildXYZ.",
+  "Implement RefreshIndicator for pull-to-refresh functionality.",
+  "Set appropriate textCapitalization, keyboardType, and textInputAction in TextFields.",
+  "Always include an errorBuilder when using Image.network.",
+];
+
+// Miscellaneous
+const miscellaneousGuidelines = [
+  "Use log instead of print for debugging.",
+  "Use BlocObserver for monitoring state transitions during debugging.",
+  "Keep lines no longer than 80 characters.",
+];
+
+// Code Generation
+const codeGenerationGuidelines = [
+  "Utilize build_runner for generating code from annotations (Freezed, JSON serialization).",
+  "Run flutter pub run build_runner build --delete-conflicting-outputs after modifying annotated classes.",
+];
+
+// Documentation
+const documentationGuidelines = [
+  "Document complex logic and non-obvious code decisions.",
+  "Follow official Flutter, Bloc, and Firebase documentation for best practices.",
+];
+
+export {
+  flutterBestPractices,
+  projectStructure,
+  codingGuidelines,
+  widgetGuidelines,
+  performanceGuidelines,
+  testingGuidelines,
+  keyPrinciples,
+  dartFlutterGuidelines,
+  errorHandlingGuidelines,
+  blocSpecificGuidelines,
+  firebaseIntegrationGuidelines,
+  additionalPerformanceGuidelines,
+  keyConventions,
+  uiStylingGuidelines,
+  modelDatabaseConventions,
+  widgetUiComponentsGuidelines,
+  miscellaneousGuidelines,
+  codeGenerationGuidelines,
+  documentationGuidelines,
+};

@@ -1,0 +1,72 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+// Cursor Rules for Sports-Themed App UI/UX
+
+// Color System
+const colorSystem = {
+  primary: "#007F3B",    // Grass Green
+  secondary: "#FFFFFF",  // Court Line White
+  accent: "#FFD600",     // Tennis Ball Yellow
+  netGray: "#666666",    // Neutral Gray
+  accessibility: {
+    level: "WCAG 2.1 AA",
+    lightMode: { background: "#FFFFFF", text: "#007F3B" },
+    darkMode:  { background: "#121212", text: "#FFD600" }
+  }
+};
+
+// Typography System
+const typographySystem = {
+  grid: "8pt",
+  fontWeights: { bold: 700, medium: 500, regular: 400 },
+  H1: { size: "40px", lineHeight: "48px", weight: 700 },
+  H2: { size: "32px", lineHeight: "40px", weight: 700 },
+  H3: { size: "24px", lineHeight: "32px", weight: 700 },
+  H4: { size: "20px", lineHeight: "28px", weight: 500 },
+  H5: { size: "16px", lineHeight: "24px", weight: 500 },
+  H6: { size: "14px", lineHeight: "20px", weight: 500 },
+  subtitle: { size: "16px", lineHeight: "24px", weight: 400 },
+  body:     { size: "14px", lineHeight: "20px", weight: 400 },
+  caption:  { size: "12px", lineHeight: "16px", weight: 400 }
+};
+
+// Interaction Experience
+const interactionExperience = [
+  "Button press scale: 0.96 animation for tactile feedback",
+  "Page transitions: fade in/out to soften abrupt changes",
+  "Scroll bounce: elastic overscroll effect like iOS",
+];
+
+// Component Optimization
+const componentOptimization = {
+  GlowButton: ["primary", "secondary", "text"],
+  borderRadius: { small: "12px", medium: "16px", large: "24px" },
+  shadow: "0 4px 12px rgba(0, 0, 0, 0.1)"
+};
+
+// Overall Layout
+const layoutGuidelines = [
+  "Use golden ratio (1:1.618) for key layout areas and whitespace",
+  "Minimum touch target: 44×44pt",
+  "Progressive disclosure: reveal information step-by-step"
+];
+
+// Usability Principles
+const usabilityPrinciples = [
+  "Clear visual cues: hover, focus, active states on all interactive elements",
+  "Simplify forms: only required fields, support social login/auto-fill",
+  "Error feedback: red highlight + descriptive message + correction tips"
+];
+
+// Export all rules
+export {
+  colorSystem,
+  typographySystem,
+  interactionExperience,
+  componentOptimization,
+  layoutGuidelines,
+  usabilityPrinciples
+};
