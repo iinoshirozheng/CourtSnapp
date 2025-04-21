@@ -210,9 +210,9 @@ class _LoginPageState extends State<LoginPage>
                                 height: 44, // 最小觸碰目標
                                 width: 44, // 最小觸碰目標
                                 child: Icon(
-                                  Icons.arrow_back_ios_new,
+                                  Icons.keyboard_arrow_down,
                                   color: Colors.black87,
-                                  size: 20,
+                                  size: 32,
                                 ),
                               ),
                             ),
@@ -373,35 +373,30 @@ class _LoginPageState extends State<LoginPage>
                                           width: double.infinity,
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
+                                                MainAxisAlignment.center,
                                             children: <Widget>[
-                                              Flexible(
-                                                child: _PasswordHint(
-                                                  text: 'uppercase',
-                                                  isValid: hasUppercase,
-                                                  fontSize: screenWidth * 0.033,
-                                                ),
+                                              _PasswordHint(
+                                                text: 'uppercase',
+                                                isValid: hasUppercase,
+                                                fontSize: 12,
                                               ),
-                                              Flexible(
-                                                child: _PasswordHint(
-                                                  text: 'letter',
-                                                  isValid: hasLetter,
-                                                  fontSize: screenWidth * 0.033,
-                                                ),
+                                              const SizedBox(width: 4),
+                                              _PasswordHint(
+                                                text: 'letter',
+                                                isValid: hasLetter,
+                                                fontSize: 12,
                                               ),
-                                              Flexible(
-                                                child: _PasswordHint(
-                                                  text: 'number',
-                                                  isValid: hasNumber,
-                                                  fontSize: screenWidth * 0.033,
-                                                ),
+                                              const SizedBox(width: 4),
+                                              _PasswordHint(
+                                                text: 'number',
+                                                isValid: hasNumber,
+                                                fontSize: 12,
                                               ),
-                                              Flexible(
-                                                child: _PasswordHint(
-                                                  text: '8~20 words',
-                                                  isValid: hasMinLength,
-                                                  fontSize: screenWidth * 0.033,
-                                                ),
+                                              const SizedBox(width: 4),
+                                              _PasswordHint(
+                                                text: '8~20 words',
+                                                isValid: hasMinLength,
+                                                fontSize: 12,
                                               ),
                                             ],
                                           ),
@@ -414,7 +409,7 @@ class _LoginPageState extends State<LoginPage>
                                     alignment: Alignment.centerRight,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
-                                        top: spacing2,
+                                        top: spacing4,
                                       ), // 8pt
                                       child: TextButton(
                                         onPressed: () {
