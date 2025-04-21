@@ -16,7 +16,38 @@ class WelcomePage extends StatefulWidget {
   State<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _WelcomePageState extends State<WelcomePage> {
+class _WelcomePageState extends State<WelcomePage>
+    with SingleTickerProviderStateMixin {
+  // 預先建立登錄頁面實例，避免首次點擊時的延遲
+  late final LoginPage _loginPage;
+  bool _isPageReady = false;
+  bool _isButtonPressed = false;
+
+  // 在build方法外部預先定義一些不變的元素
+  final loginTransition = MaterialPageRoute<void>;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 在下一幀預加載登錄頁面
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // 提前創建LoginPage實例
+      _loginPage = LoginPage(toggleTheme: widget.toggleTheme);
+
+      // 標記為準備好
+      setState(() {
+        _isPageReady = true;
+      });
+
+      // 預先觸發首次佈局，但不顯示
+      precacheImage(
+        const AssetImage('assets/images/pickleball_court.png'),
+        context,
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // 獲取屏幕尺寸
@@ -128,68 +159,87 @@ class _WelcomePageState extends State<WelcomePage> {
                 children: [
                   SizedBox(height: screenHeight * 0.06), // 6% of screen height
                   // CTA Button - Book a Court
-                  Container(
-                    width: buttonWidth,
-                    height: buttonHeight,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(borderRadius),
-                      boxShadow: [
-                        BoxShadow(
-                          color: WelcomePageStyles.brandColor.withValues(
-                            alpha: 0.3,
-                          ),
-                          blurRadius: 8,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        debugPrint('Book a court button pressed');
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    LoginPage(toggleTheme: widget.toggleTheme),
-                            transitionsBuilder: (
-                              context,
-                              animation,
-                              secondaryAnimation,
-                              child,
-                            ) {
-                              var begin = const Offset(0.0, 1.0);
-                              var end = Offset.zero;
-                              var curve = Curves.easeOutQuint;
-                              var tween = Tween(
-                                begin: begin,
-                                end: end,
-                              ).chain(CurveTween(curve: curve));
-                              return SlideTransition(
-                                position: animation.drive(tween),
-                                child: child,
-                              );
-                            },
-                            transitionDuration: const Duration(
-                              milliseconds: 500,
+                  RepaintBoundary(
+                    child: Container(
+                      width: buttonWidth,
+                      height: buttonHeight,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(borderRadius),
+                        boxShadow: [
+                          BoxShadow(
+                            color: WelcomePageStyles.brandColor.withValues(
+                              alpha: 0.3,
                             ),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: WelcomePageStyles.brandColor,
-                        foregroundColor: Colors.white,
-                        minimumSize: Size(buttonWidth, buttonHeight),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(borderRadius),
-                        ),
-                        elevation: 0,
-                        textStyle: TextStyle(
-                          fontSize: screenHeight * 0.02, // 2% of screen height
-                          fontWeight: FontWeight.w600,
-                        ),
+                        ],
                       ),
-                      child: const Text('Book a Court'),
+                      child: ElevatedButton(
+                        // 防止重複點擊按鈕
+                        onPressed:
+                            _isButtonPressed
+                                ? null
+                                : () {
+                                  // 設置狀態避免多次點擊
+                                  setState(() {
+                                    _isButtonPressed = true;
+                                  });
+
+                                  debugPrint('Book a court button pressed');
+
+                                  // 使用預先建立的頁面實例
+                                  if (_isPageReady) {
+                                    Navigator.of(context)
+                                        .push(
+                                          _SmoothSlideUpPageRoute(
+                                            builder: (context) => _loginPage,
+                                          ),
+                                        )
+                                        .then((_) {
+                                          // 恢復按鈕狀態
+                                          if (mounted) {
+                                            setState(() {
+                                              _isButtonPressed = false;
+                                            });
+                                          }
+                                        });
+                                  } else {
+                                    // 備用方案：如果預加載未就緒，則創建新實例
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => LoginPage(
+                                              toggleTheme: widget.toggleTheme,
+                                            ),
+                                      ),
+                                    ).then((_) {
+                                      // 恢復按鈕狀態
+                                      if (mounted) {
+                                        setState(() {
+                                          _isButtonPressed = false;
+                                        });
+                                      }
+                                    });
+                                  }
+                                },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: WelcomePageStyles.brandColor,
+                          foregroundColor: Colors.white,
+                          minimumSize: Size(buttonWidth, buttonHeight),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(borderRadius),
+                          ),
+                          elevation: 0,
+                          textStyle: TextStyle(
+                            fontSize:
+                                screenHeight * 0.02, // 2% of screen height
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        child: const Text('Book a Court'),
+                      ),
                     ),
                   ),
 
@@ -231,6 +281,74 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// 平滑的向上滑動轉場路由，經過優化以提高性能
+class _SmoothSlideUpPageRoute<T> extends PageRoute<T> {
+  _SmoothSlideUpPageRoute({required this.builder, super.settings})
+    : super(fullscreenDialog: false);
+
+  final WidgetBuilder builder;
+
+  @override
+  bool get opaque => false;
+
+  @override
+  bool get barrierDismissible => false;
+
+  @override
+  Color? get barrierColor => null;
+
+  @override
+  String? get barrierLabel => null;
+
+  @override
+  bool get maintainState => true;
+
+  @override
+  // 企業級應用標準轉場時間
+  Duration get transitionDuration => const Duration(milliseconds: 300);
+
+  @override
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
+    final result = builder(context);
+    return RepaintBoundary(child: result);
+  }
+
+  @override
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    const begin = Offset(0.0, 1.0);
+    const end = Offset.zero;
+
+    // 使用企業級應用首選的曲線
+    final curve = CurvedAnimation(
+      parent: animation,
+      curve: Curves.fastLinearToSlowEaseIn,
+    );
+
+    // 組合位移和透明度動畫，模擬高端企業應用的轉場效果
+    return FadeTransition(
+      opacity: Tween<double>(begin: 0.3, end: 1.0).animate(
+        CurvedAnimation(
+          parent: animation,
+          curve: const Interval(0.0, 0.65, curve: Curves.easeOutQuint),
+        ),
+      ),
+      child: SlideTransition(
+        position: Tween<Offset>(begin: begin, end: end).animate(curve),
+        child: child,
       ),
     );
   }

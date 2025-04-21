@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 
 /// 專業UI/UX設計的應用主題系統，基於網球場配色
 class AppTheme {
-  // 顏色系統 - 基於網球場配色
-  static const colorPrimary = Color(0xFF8AD28B); // 綠色（球場）
+  // 顏色系統 - 基於UI/UX設計師規範的網球場主題配色
+  static const colorPrimary = Color(0xFF007F3B); // 草地綠 (UI規範主色)
   static const colorPrimaryLight = Color(0xFFB8E0B9); // 淺綠色
-  static const colorPrimaryDark = Color(0xFF5EAA60); // 深綠色
+  static const colorPrimaryDark = Color(0xFF005A29); // 深綠色
 
-  static const colorSecondary = Color(0xFF77CEF9); // 藍色（網區）
-  static const colorSecondaryLight = Color(0xFFA3E0FF); // 淺藍色
-  static const colorSecondaryDark = Color(0xFF5BBAED); // 深藍色
+  static const colorSecondary = Color(0xFFFFFFFF); // 球場線白色 (UI規範次色)
+  static const colorSecondaryLight = Color(0xFFFAFAFA); // 淺白色
+  static const colorSecondaryDark = Color(0xFFE0E0E0); // 深白色
 
-  static const colorAccent = Color(0xFFF9BBCB); // 粉紅色（邊界）
-  static const colorAccentLight = Color(0xFFFFCEDC); // 淺粉紅色
-  static const colorAccentDark = Color(0xFFE799AA); // 深粉紅色
+  static const colorAccent = Color(0xFFFFD600); // 網球黃 (UI規範強調色)
+  static const colorAccentLight = Color(0xFFFFE566); // 淺黃色
+  static const colorAccentDark = Color(0xFFC7A500); // 深黃色
+
+  static const colorNetGray = Color(0xFF666666); // 中性灰 (UI規範中性色)
 
   // 淺色主題中性色
   static const colorBackground = Color(0xFFFAFAFA); // 背景色
@@ -23,21 +25,23 @@ class AppTheme {
   static const colorTextHint = Color(0xFF757575); // 提示文本
   static const colorTextLight = Color(0xFFFFFFFF); // 亮色文本
 
-  // 深色主題中性色
-  static const colorDarkBackground = Color(0xFF121212); // 深色背景
+  // 深色主題中性色 - 按照UI/UX設計師規範
+  static const colorDarkBackground = Color(0xFF121212); // 深色背景 (UI規範深色背景)
   static const colorDarkSurface = Color(0xFF1E1E1E); // 深色表面
-  static const colorDarkTextPrimary = Color(0xFFF5F5F5); // 深色主要文本
+  static const colorDarkTextPrimary = Color(0xFFFFD600); // 深色主要文本 (使用網球黃)
   static const colorDarkTextSecondary = Color(0xFFBDBDBD); // 深色次要文本
   static const colorDarkTextHint = Color(0xFF9E9E9E); // 深色提示文本
   static const colorDarkTextDark = Color(0xFF1A1A1A); // 深色上的深色文本
 
-  // 縮放字體大小 - Material Design排版系統
-  static const double fontSizeH1 = 28.0;
-  static const double fontSizeH2 = 24.0;
-  static const double fontSizeH3 = 20.0;
-  static const double fontSizeBodyLarge = 16.0;
-  static const double fontSizeBodyMedium = 14.0;
-  static const double fontSizeCaption = 12.0;
+  // 縮放字體大小 - 基於UI/UX設計師規範的8pt網格系統
+  static const double fontSizeH1 = 40.0; // H1
+  static const double fontSizeH2 = 32.0; // H2
+  static const double fontSizeH3 = 24.0; // H3
+  static const double fontSizeH4 = 20.0; // H4
+  static const double fontSizeH5 = 16.0; // H5
+  static const double fontSizeBodyLarge = 16.0; // Body
+  static const double fontSizeBodyMedium = 14.0; // Body
+  static const double fontSizeCaption = 12.0; // Caption
 
   // 標準間距 - 基於8pt網格系統
   static const double spacingXs = 4.0;
@@ -47,11 +51,10 @@ class AppTheme {
   static const double spacingXl = 32.0;
   static const double spacing2xl = 48.0;
 
-  // 標準圓角半徑
-  static const double radiusSm = 8.0;
-  static const double radiusMd = 16.0;
-  static const double radiusLg = 24.0;
-  static const double radiusXl = 32.0;
+  // 標準圓角半徑 - 基於UI/UX設計師規範
+  static const double radiusSmall = 12.0; // Small
+  static const double radiusMedium = 16.0; // Medium
+  static const double radiusLarge = 24.0; // Large
 
   // 標準陰影
   static List<BoxShadow> get shadowSmall => [
@@ -100,14 +103,14 @@ class AppTheme {
         // 標題樣式
         headlineLarge: TextStyle(
           fontSize: fontSizeH1,
-          fontWeight: FontWeight.w900,
+          fontWeight: FontWeight.w700,
           color: colorTextPrimary,
           letterSpacing: 0.2,
           height: 1.2,
         ),
         headlineMedium: TextStyle(
           fontSize: fontSizeH2,
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.w700,
           color: colorTextPrimary,
           letterSpacing: 0.15,
           height: 1.25,
@@ -115,6 +118,20 @@ class AppTheme {
         headlineSmall: TextStyle(
           fontSize: fontSizeH3,
           fontWeight: FontWeight.w700,
+          color: colorTextPrimary,
+          letterSpacing: 0.1,
+          height: 1.3,
+        ),
+        titleLarge: TextStyle(
+          fontSize: fontSizeH4,
+          fontWeight: FontWeight.w500,
+          color: colorTextPrimary,
+          letterSpacing: 0.1,
+          height: 1.3,
+        ),
+        titleMedium: TextStyle(
+          fontSize: fontSizeH5,
+          fontWeight: FontWeight.w500,
           color: colorTextPrimary,
           letterSpacing: 0.1,
           height: 1.3,
@@ -143,7 +160,7 @@ class AppTheme {
         // 標籤和按鈕文本
         labelLarge: TextStyle(
           fontSize: fontSizeBodyMedium,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
           color: colorTextPrimary,
           letterSpacing: 0.1,
         ),
@@ -157,8 +174,8 @@ class AppTheme {
         shadowColor: Colors.black.withAlpha(13), // ~0.05 opacity
         titleTextStyle: TextStyle(
           color: colorTextPrimary,
-          fontSize: fontSizeH3,
-          fontWeight: FontWeight.w600,
+          fontSize: fontSizeH4,
+          fontWeight: FontWeight.w500,
         ),
         iconTheme: IconThemeData(color: colorTextPrimary),
       ),
@@ -168,7 +185,7 @@ class AppTheme {
         color: colorSurface,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radiusMd),
+          borderRadius: BorderRadius.circular(radiusMedium),
         ),
         shadowColor: Colors.black.withAlpha(26), // ~0.1 opacity
         margin: const EdgeInsets.all(spacingSm),
@@ -185,11 +202,11 @@ class AppTheme {
             horizontal: spacingLg,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radiusMd),
+            borderRadius: BorderRadius.circular(radiusMedium),
           ),
           textStyle: const TextStyle(
             fontSize: fontSizeBodyMedium,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
             letterSpacing: 0.5,
           ),
         ),
@@ -204,11 +221,11 @@ class AppTheme {
             horizontal: spacingLg,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radiusMd),
+            borderRadius: BorderRadius.circular(radiusMedium),
           ),
           textStyle: const TextStyle(
             fontSize: fontSizeBodyMedium,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
             letterSpacing: 0.5,
           ),
         ),
@@ -222,11 +239,11 @@ class AppTheme {
             horizontal: spacingMd,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radiusSm),
+            borderRadius: BorderRadius.circular(radiusSmall),
           ),
           textStyle: const TextStyle(
             fontSize: fontSizeBodyMedium,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
             letterSpacing: 0.5,
           ),
         ),
@@ -241,19 +258,19 @@ class AppTheme {
           horizontal: spacingMd,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radiusMd),
+          borderRadius: BorderRadius.circular(radiusMedium),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radiusMd),
+          borderRadius: BorderRadius.circular(radiusMedium),
           borderSide: BorderSide(color: colorPrimaryLight),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radiusMd),
+          borderRadius: BorderRadius.circular(radiusMedium),
           borderSide: BorderSide(color: colorPrimary, width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radiusMd),
+          borderRadius: BorderRadius.circular(radiusMedium),
           borderSide: BorderSide(color: Colors.red.shade300),
         ),
         hintStyle: TextStyle(
@@ -268,7 +285,7 @@ class AppTheme {
         floatingLabelStyle: TextStyle(
           color: colorPrimary,
           fontSize: fontSizeBodyMedium,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
         ),
       ),
 
@@ -279,35 +296,25 @@ class AppTheme {
         unselectedItemColor: colorTextSecondary,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
-        selectedLabelStyle: const TextStyle(
-          fontSize: fontSizeCaption,
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: const TextStyle(
-          fontSize: fontSizeCaption,
-          fontWeight: FontWeight.w500,
-        ),
+        showUnselectedLabels: true,
       ),
-
-      // 圖標主題
-      iconTheme: IconThemeData(color: colorTextPrimary, size: 24),
     );
   }
 
-  /// 深色主題 - 基於球場配色的暗色版本
+  /// 深色主題 - 基於UI/UX設計師規範
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
-      primaryColor: colorPrimary,
       brightness: Brightness.dark,
+      primaryColor: colorAccent, // 在暗模式下使用網球黃作為主色
       colorScheme: ColorScheme.dark(
-        primary: colorPrimary,
-        primaryContainer: colorPrimaryDark,
+        primary: colorAccent, // 網球黃作為主色
+        primaryContainer: colorAccentLight,
         secondary: colorSecondary,
         secondaryContainer: colorSecondaryDark,
         surface: colorDarkSurface,
-        error: Colors.red.shade300,
-        tertiary: colorAccent,
+        error: Colors.red.shade700,
+        tertiary: colorPrimary, // 草地綠作為第三色
       ),
       scaffoldBackgroundColor: colorDarkBackground,
 
@@ -316,14 +323,14 @@ class AppTheme {
         // 標題樣式
         headlineLarge: TextStyle(
           fontSize: fontSizeH1,
-          fontWeight: FontWeight.w900,
+          fontWeight: FontWeight.w700,
           color: colorDarkTextPrimary,
           letterSpacing: 0.2,
           height: 1.2,
         ),
         headlineMedium: TextStyle(
           fontSize: fontSizeH2,
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.w700,
           color: colorDarkTextPrimary,
           letterSpacing: 0.15,
           height: 1.25,
@@ -335,12 +342,26 @@ class AppTheme {
           letterSpacing: 0.1,
           height: 1.3,
         ),
+        titleLarge: TextStyle(
+          fontSize: fontSizeH4,
+          fontWeight: FontWeight.w500,
+          color: colorDarkTextPrimary,
+          letterSpacing: 0.1,
+          height: 1.3,
+        ),
+        titleMedium: TextStyle(
+          fontSize: fontSizeH5,
+          fontWeight: FontWeight.w500,
+          color: colorDarkTextPrimary,
+          letterSpacing: 0.1,
+          height: 1.3,
+        ),
 
         // 內文樣式
         bodyLarge: TextStyle(
           fontSize: fontSizeBodyLarge,
           fontWeight: FontWeight.w400,
-          color: colorDarkTextPrimary,
+          color: colorDarkTextSecondary,
           height: 1.5,
         ),
         bodyMedium: TextStyle(
@@ -359,7 +380,7 @@ class AppTheme {
         // 標籤和按鈕文本
         labelLarge: TextStyle(
           fontSize: fontSizeBodyMedium,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
           color: colorDarkTextPrimary,
           letterSpacing: 0.1,
         ),
@@ -373,8 +394,8 @@ class AppTheme {
         shadowColor: Colors.black.withAlpha(40),
         titleTextStyle: TextStyle(
           color: colorDarkTextPrimary,
-          fontSize: fontSizeH3,
-          fontWeight: FontWeight.w600,
+          fontSize: fontSizeH4,
+          fontWeight: FontWeight.w500,
         ),
         iconTheme: IconThemeData(color: colorDarkTextPrimary),
       ),
@@ -384,7 +405,7 @@ class AppTheme {
         color: colorDarkSurface,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radiusMd),
+          borderRadius: BorderRadius.circular(radiusMedium),
         ),
         shadowColor: Colors.black.withAlpha(40),
         margin: const EdgeInsets.all(spacingSm),
@@ -393,19 +414,19 @@ class AppTheme {
       // 按鈕主題
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: colorPrimary,
-          foregroundColor: colorDarkTextDark,
+          backgroundColor: colorAccent, // 網球黃作為按鈕背景
+          foregroundColor: colorDarkTextDark, // 深色文本
           elevation: 0,
           padding: const EdgeInsets.symmetric(
             vertical: spacingMd,
             horizontal: spacingLg,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radiusMd),
+            borderRadius: BorderRadius.circular(radiusMedium),
           ),
           textStyle: const TextStyle(
             fontSize: fontSizeBodyMedium,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
             letterSpacing: 0.5,
           ),
         ),
@@ -413,18 +434,18 @@ class AppTheme {
 
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: colorPrimary,
-          side: BorderSide(color: colorPrimary),
+          foregroundColor: colorAccent, // 網球黃作為文本顏色
+          side: BorderSide(color: colorAccent), // 網球黃作為邊框
           padding: const EdgeInsets.symmetric(
             vertical: spacingMd,
             horizontal: spacingLg,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radiusMd),
+            borderRadius: BorderRadius.circular(radiusMedium),
           ),
           textStyle: const TextStyle(
             fontSize: fontSizeBodyMedium,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
             letterSpacing: 0.5,
           ),
         ),
@@ -432,17 +453,17 @@ class AppTheme {
 
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: colorPrimary,
+          foregroundColor: colorAccent, // 網球黃作為文本顏色
           padding: const EdgeInsets.symmetric(
             vertical: spacingSm,
             horizontal: spacingMd,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radiusSm),
+            borderRadius: BorderRadius.circular(radiusSmall),
           ),
           textStyle: const TextStyle(
             fontSize: fontSizeBodyMedium,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
             letterSpacing: 0.5,
           ),
         ),
@@ -457,19 +478,19 @@ class AppTheme {
           horizontal: spacingMd,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radiusMd),
+          borderRadius: BorderRadius.circular(radiusMedium),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radiusMd),
-          borderSide: BorderSide(color: colorPrimaryDark),
+          borderRadius: BorderRadius.circular(radiusMedium),
+          borderSide: BorderSide(color: colorAccentDark),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radiusMd),
-          borderSide: BorderSide(color: colorPrimary, width: 2),
+          borderRadius: BorderRadius.circular(radiusMedium),
+          borderSide: BorderSide(color: colorAccent, width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radiusMd),
+          borderRadius: BorderRadius.circular(radiusMedium),
           borderSide: BorderSide(color: Colors.red.shade300),
         ),
         hintStyle: TextStyle(
@@ -482,31 +503,21 @@ class AppTheme {
           fontWeight: FontWeight.w500,
         ),
         floatingLabelStyle: TextStyle(
-          color: colorPrimary,
+          color: colorAccent,
           fontSize: fontSizeBodyMedium,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
         ),
       ),
 
       // 底部導航欄主題
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: colorDarkSurface,
-        selectedItemColor: colorPrimary,
+        selectedItemColor: colorAccent, // 網球黃作為選中項目顏色
         unselectedItemColor: colorDarkTextSecondary,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
-        selectedLabelStyle: const TextStyle(
-          fontSize: fontSizeCaption,
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: const TextStyle(
-          fontSize: fontSizeCaption,
-          fontWeight: FontWeight.w500,
-        ),
+        showUnselectedLabels: true,
       ),
-
-      // 圖標主題
-      iconTheme: IconThemeData(color: colorDarkTextPrimary, size: 24),
     );
   }
 }
