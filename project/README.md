@@ -1,16 +1,81 @@
-# project
+# Court Snapp
 
-A new Flutter project.
+A modern, responsive Flutter application for booking and managing court reservations.
+
+## Architecture
+
+This project follows a Clean Architecture approach with MVVM (Model-View-ViewModel) pattern and BLoC for state management.
+
+### Project Structure
+
+```
+lib/
+  ├── core/                    # Core functionality used across the app
+  │   ├── constants/           # App-wide constants
+  │   ├── di/                  # Dependency injection
+  │   ├── error/               # Error handling
+  │   ├── navigation/          # Routing
+  │   ├── network/             # Network services
+  │   ├── presentation/        # Presentation layer components
+  │   │   ├── bloc/            # Global blocs
+  │   │   ├── components/      # Reusable UI components
+  │   │   │   ├── buttons/     # Button components
+  │   │   │   ├── cards/       # Card components
+  │   │   │   ├── inputs/      # Input field components
+  │   │   │   ├── layouts/     # Layout components
+  │   │   │   ├── loaders/     # Loading components
+  │   │   │   └── indicators/  # Progress indicators
+  │   │   ├── viewmodels/      # Base view model classes
+  │   │   └── widgets/         # Shared widgets
+  │   ├── theme/               # App theming
+  │   └── utils/               # Utility functions
+  │
+  ├── features/                # App features (domains)
+  │   ├── auth/                # Authentication feature
+  │   │   ├── data/            # Data layer
+  │   │   │   ├── datasources/ # Data sources
+  │   │   │   ├── models/      # Data models
+  │   │   │   └── repositories/# Repository implementations
+  │   │   ├── domain/          # Domain layer
+  │   │   │   ├── entities/    # Business entities
+  │   │   │   ├── repositories/# Repository interfaces
+  │   │   │   └── usecases/    # Business use cases
+  │   │   └── presentation/    # Presentation layer
+  │   │       ├── bloc/        # Feature-specific blocs
+  │   │       ├── pages/       # UI pages
+  │   │       ├── viewmodels/  # View models for MVVM pattern
+  │   │       └── widgets/     # Feature-specific widgets
+  │   └── [other_features]/    # Other app features
+  │
+  └── main.dart                # App entry point
+```
+
+### Key Architectural Components
+
+- **Clean Architecture**: Separate data, domain, and presentation layers
+- **MVVM Pattern**: Separation of UI (View) from business logic (ViewModel)
+- **BLoC State Management**: Reactive state management with events and states
+- **Dependency Injection**: Using get_it and injectable
+- **Repository Pattern**: Abstract data access
+- **Use Cases**: Encapsulate business logic
+
+### Key Packages Used
+
+- flutter_bloc: State management
+- get_it & injectable: Dependency injection
+- freezed: Immutable state models
+- go_router: Navigation
+- dartz: Functional programming constructs
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1. Clone the repository
+2. Run `flutter pub get` to install dependencies
+3. Run `flutter pub run build_runner build --delete-conflicting-outputs` to generate code
+4. Run `flutter run` to start the app
 
-A few resources to get you started if this is your first Flutter project:
+## Development Process
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Code generation: `flutter pub run build_runner build --delete-conflicting-outputs`
+- Tests: `flutter test`
+- Building: `flutter build apk` (Android) or `flutter build ios` (iOS)
