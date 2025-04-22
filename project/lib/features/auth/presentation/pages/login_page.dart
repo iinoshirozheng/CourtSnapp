@@ -148,9 +148,6 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-
     // 使用固定間距（8pt網格系統）
     const double grid = 8.0;
 
@@ -480,7 +477,9 @@ class _LoginPageState extends State<LoginPage>
                                       borderRadius: BorderRadius.circular(12),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: brandColor.withOpacity(0.3),
+                                          color: brandColor.withValues(
+                                            alpha: 0.3,
+                                          ),
                                           blurRadius: 8,
                                           offset: const Offset(0, 4),
                                           spreadRadius: -2,
@@ -495,9 +494,9 @@ class _LoginPageState extends State<LoginPage>
                                         backgroundColor: brandColor,
                                         foregroundColor: Colors.white,
                                         disabledBackgroundColor: brandColor
-                                            .withOpacity(0.6),
+                                            .withValues(alpha: 0.6),
                                         disabledForegroundColor: Colors.white
-                                            .withOpacity(0.8),
+                                            .withValues(alpha: 0.8),
                                         elevation: 0,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
@@ -559,7 +558,7 @@ class _LoginPageState extends State<LoginPage>
                               children: [
                                 Expanded(
                                   child: Divider(
-                                    color: Colors.grey.withOpacity(0.3),
+                                    color: Colors.grey.withValues(alpha: 0.3),
                                     thickness: 1,
                                   ),
                                 ),
@@ -578,7 +577,7 @@ class _LoginPageState extends State<LoginPage>
                                 ),
                                 Expanded(
                                   child: Divider(
-                                    color: Colors.grey.withOpacity(0.3),
+                                    color: Colors.grey.withValues(alpha: 0.3),
                                     thickness: 1,
                                   ),
                                 ),
@@ -758,12 +757,10 @@ class _SocialLoginButton extends StatelessWidget {
   const _SocialLoginButton({
     required this.text,
     required this.onPressed,
-    this.icon,
     this.customIcon,
   });
 
   final String text;
-  final IconData? icon;
   final Widget? customIcon;
   final VoidCallback onPressed;
 
@@ -792,7 +789,7 @@ class _SocialLoginButton extends StatelessWidget {
                   height: 24,
                   child:
                       customIcon ??
-                      Icon(icon, size: 20, color: _getIconColor(icon)),
+                      const Icon(Icons.link, size: 20, color: Colors.black87),
                 ),
                 Expanded(
                   child: Center(
@@ -813,29 +810,21 @@ class _SocialLoginButton extends StatelessWidget {
       ),
     );
   }
-
-  Color _getIconColor(IconData? icon) {
-    if (icon == Icons.facebook) return const Color(0xFF1877F2);
-    if (icon == Icons.apple) return Colors.black;
-    return Colors.black87;
-  }
 }
 
 // Google Logo 定制組件
 class _GoogleLogo extends StatelessWidget {
-  const _GoogleLogo({this.size = 20});
-
-  final double size;
+  const _GoogleLogo();
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: size,
-      height: size,
+      width: 20,
+      height: 20,
       child: SvgPicture.asset(
         'assets/logos/google-logo.svg',
-        width: size,
-        height: size,
+        width: 20,
+        height: 20,
       ),
     );
   }
@@ -886,19 +875,17 @@ class _PasswordHint extends StatelessWidget {
 
 // Apple Logo SVG widget
 class _AppleLogo extends StatelessWidget {
-  const _AppleLogo({this.size = 20});
-
-  final double size;
+  const _AppleLogo();
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: size,
-      height: size,
+      width: 20,
+      height: 20,
       child: SvgPicture.asset(
         'assets/logos/apple-logo.svg',
-        width: size,
-        height: size,
+        width: 20,
+        height: 20,
         colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
       ),
     );
@@ -907,19 +894,17 @@ class _AppleLogo extends StatelessWidget {
 
 // Facebook Logo SVG widget
 class _FacebookLogo extends StatelessWidget {
-  const _FacebookLogo({this.size = 20});
-
-  final double size;
+  const _FacebookLogo();
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: size,
-      height: size,
+      width: 20,
+      height: 20,
       child: SvgPicture.asset(
         'assets/logos/facebook-logo.svg',
-        width: size,
-        height: size,
+        width: 20,
+        height: 20,
       ),
     );
   }

@@ -37,10 +37,3 @@ class AppStyles {
 
   const AppStyles._();
 }
-
-// Extension to get color values with different opacity
-extension ColorExtension on Color {
-  Color withValues({int? alpha}) {
-    return withOpacity(alpha != null ? alpha / 255 : 1.0);
-  }
-}
