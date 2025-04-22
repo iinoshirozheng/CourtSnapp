@@ -4,9 +4,14 @@ import 'package:project/core/di/injection.dart';
 import 'package:project/core/navigation/app_router.dart';
 import 'package:project/core/presentation/bloc/theme/theme_bloc.dart';
 import 'package:project/core/theme/app_theme.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:project/firebase_options.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Initialize dependency injection
   await configureDependencies();

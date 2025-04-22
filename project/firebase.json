@@ -1,0 +1,31 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "court-snapp",
+                    "appId": "1:121502446229:android:e7629c1258a57b8c27e19c",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "ios": {
+                "default": {
+                    "projectId": "court-snapp",
+                    "appId": "1:121502446229:ios:e95bd266df3a4bcf27e19c",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "court-snapp",
+                    "configurations": {
+                        "android": "1:121502446229:android:e7629c1258a57b8c27e19c",
+                        "ios": "1:121502446229:ios:e95bd266df3a4bcf27e19c",
+                        "web": "1:121502446229:web:434dddc7f49e59c527e19c"
+                    }
+                }
+            }
+        }
+    }
+}

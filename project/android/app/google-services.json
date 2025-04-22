@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "121502446229",
+    "project_id": "court-snapp",
+    "storage_bucket": "court-snapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121502446229:android:e7629c1258a57b8c27e19c",
+        "android_client_info": {
+          "package_name": "com.example.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMxy_Qk1P34TDIwOihW0blaHBDXwPU7tk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
