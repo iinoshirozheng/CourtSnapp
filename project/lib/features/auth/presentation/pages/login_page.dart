@@ -469,7 +469,7 @@ class _LoginPageState extends State<LoginPage>
                                       },
                                     ),
                                     const SizedBox(
-                                      height: SpacingConstants.spacing3,
+                                      height: SpacingConstants.spacing5,
                                     ),
                                     GoogleLoginButton(
                                       onPressed: () {
@@ -477,7 +477,7 @@ class _LoginPageState extends State<LoginPage>
                                       },
                                     ),
                                     const SizedBox(
-                                      height: SpacingConstants.spacing3,
+                                      height: SpacingConstants.spacing5,
                                     ),
                                     FacebookLoginButton(
                                       onPressed: () {

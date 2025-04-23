@@ -20,11 +20,12 @@ class FacebookLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SocialLoginButton(
-      icon: const FacebookLogo(),
+      icon: const FacebookLogo(color: Colors.white),
       text: 'Continue with Facebook',
-      bgColor: Colors.white,
-      textColor: Colors.black87,
-      borderColor: Colors.grey.withValues(alpha: 0.3),
+      bgColor: const Color(0xFF1877F2), // Facebook blue
+      textColor: Colors.white,
+      borderColor: Colors.transparent,
+      borderRadius: 12.0,
       onPressed: onPressed,
       isLoading: isLoading,
     );
@@ -53,7 +54,8 @@ class GoogleLoginButton extends StatelessWidget {
       text: 'Continue with Google',
       bgColor: Colors.white,
       textColor: Colors.black87,
-      borderColor: Colors.grey.withValues(alpha: 0.3),
+      borderColor: const Color(0xFF5D4037).withValues(alpha: 0.5),
+      borderRadius: 12.0,
       onPressed: onPressed,
       isLoading: isLoading,
     );
@@ -78,11 +80,12 @@ class AppleLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SocialLoginButton(
-      icon: const AppleLogo(),
+      icon: const AppleLogo(color: Colors.white),
       text: 'Continue with Apple',
-      bgColor: Colors.white,
-      textColor: Colors.black87,
-      borderColor: Colors.grey.withValues(alpha: 0.3),
+      bgColor: Colors.black,
+      textColor: Colors.white,
+      borderColor: Colors.transparent,
+      borderRadius: 12.0,
       onPressed: onPressed,
       isLoading: isLoading,
     );

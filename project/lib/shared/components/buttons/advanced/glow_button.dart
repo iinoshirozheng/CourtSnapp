@@ -103,7 +103,7 @@ class _GlowButtonState extends State<GlowButton> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     // Check if in dark mode
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    // final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,

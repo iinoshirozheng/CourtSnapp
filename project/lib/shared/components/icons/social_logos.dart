@@ -54,8 +54,15 @@ class FacebookLogo extends StatelessWidget {
   /// Size of the logo
   final double size;
 
+  /// Color of the logo (defaults to blue)
+  final Color color;
+
   /// Constructor
-  const FacebookLogo({super.key, this.size = 24});
+  const FacebookLogo({
+    super.key,
+    this.size = 20,
+    this.color = const Color(0xFF1877F2),
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +73,7 @@ class FacebookLogo extends StatelessWidget {
         'assets/logos/facebook-logo.svg',
         width: size,
         height: size,
+        colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
       ),
     );
   }
