@@ -5,6 +5,7 @@ import 'package:project/shared/components/indicators/password_hint.dart';
 import 'package:project/shared/components/inputs/custom_text_field.dart';
 import 'package:project/shared/components/inputs/form_label.dart';
 import 'package:project/core/utils/form_validators.dart';
+import 'package:project/features/auth/presentation/theme/welcome_page_styles.dart';
 
 /// A specialized password input field for authentication screens
 class AuthPasswordField extends StatefulWidget {
@@ -114,35 +115,27 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
           errorText: errorMessage,
           inputBgColor: AppColors.inputBgColor,
           inputBorderColor: AppColors.inputBorderColor,
-          inputFocusBorderColor: AppColors.brandColor,
-          brandColor: AppColors.brandColor,
+          inputFocusBorderColor: WelcomePageStyles.brandColor,
+          brandColor: WelcomePageStyles.brandColor,
           errorColor: AppColors.errorColor,
-          suffixIcon: GestureDetector(
-            onTapDown: (_) {
-              setState(() {
-                obscureText = false;
-              });
-            },
-            onTapUp: (_) {
-              setState(() {
-                obscureText = true;
-              });
-            },
-            onTapCancel: () {
-              setState(() {
-                obscureText = true;
-              });
-            },
-            excludeFromSemantics: true,
-            child: Container(
-              color: Colors.transparent,
-              padding: const EdgeInsets.all(8),
-              child: Icon(
-                obscureText
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined,
-                color: Colors.grey,
-                size: 20,
+          suffixIcon: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  obscureText = !obscureText;
+                });
+              },
+              customBorder: const CircleBorder(),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Icon(
+                  obscureText
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
+                  color: Colors.grey,
+                  size: 20,
+                ),
               ),
             ),
           ),

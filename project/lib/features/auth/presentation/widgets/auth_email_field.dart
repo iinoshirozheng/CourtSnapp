@@ -4,6 +4,7 @@ import 'package:project/shared/components/inputs/form_label.dart';
 import 'package:project/core/constants/app_colors.dart';
 import 'package:project/core/constants/spacing_constants.dart';
 import 'package:project/core/utils/form_validators.dart';
+import 'package:project/features/auth/presentation/theme/welcome_page_styles.dart';
 
 /// A specialized email input field for authentication screens
 class AuthEmailField extends StatefulWidget {
@@ -96,8 +97,8 @@ class _AuthEmailFieldState extends State<AuthEmailField> {
           errorText: errorMessage,
           inputBgColor: AppColors.inputBgColor,
           inputBorderColor: AppColors.inputBorderColor,
-          inputFocusBorderColor: AppColors.brandColor,
-          brandColor: AppColors.brandColor,
+          inputFocusBorderColor: WelcomePageStyles.brandColor,
+          brandColor: WelcomePageStyles.brandColor,
           errorColor: AppColors.errorColor,
           onSubmitted: widget.onSubmitted,
         ),

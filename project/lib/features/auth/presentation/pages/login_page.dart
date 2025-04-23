@@ -13,6 +13,7 @@ import 'package:project/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:project/features/auth/presentation/bloc/login/login_bloc.dart';
 import 'package:project/features/auth/presentation/bloc/login/login_event.dart';
 import 'package:project/features/auth/presentation/bloc/login/login_state.dart';
+import 'package:project/features/auth/presentation/theme/welcome_page_styles.dart';
 import 'package:project/features/auth/presentation/widgets/auth_email_field.dart';
 import 'package:project/features/auth/presentation/widgets/auth_error_message.dart';
 import 'package:project/features/auth/presentation/widgets/auth_password_field.dart';
@@ -191,10 +192,13 @@ class _LoginPageState extends State<LoginPage>
                                           child: const SizedBox(
                                             height: 44,
                                             width: 44,
-                                            child: Icon(
-                                              Icons.keyboard_arrow_down,
-                                              color: Colors.black87,
-                                              size: 32,
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Icon(
+                                                Icons.keyboard_arrow_down,
+                                                color: Colors.black87,
+                                                size: 32,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -212,10 +216,13 @@ class _LoginPageState extends State<LoginPage>
                                           child: const SizedBox(
                                             height: 44,
                                             width: 44,
-                                            child: Icon(
-                                              Icons.help_outline,
-                                              color: Colors.black45,
-                                              size: 20,
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Icon(
+                                                Icons.help_outline,
+                                                color: Colors.black45,
+                                                size: 20,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -227,11 +234,11 @@ class _LoginPageState extends State<LoginPage>
                                 // Title section
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                    top: SpacingConstants.spacing5,
+                                    top: SpacingConstants.spacing2,
                                     bottom: SpacingConstants.spacing6,
                                   ),
                                   child: Text(
-                                    'Welcome back!',
+                                    'Back to the Courts!',
                                     style: GoogleFonts.poppins(
                                       fontSize: 32,
                                       fontWeight: FontWeight.w600,
@@ -301,8 +308,9 @@ class _LoginPageState extends State<LoginPage>
                                               // TODO: Implement forgot password
                                             },
                                             style: TextButton.styleFrom(
-                                              foregroundColor:
-                                                  AppColors.brandColor,
+                                              foregroundColor: const Color(
+                                                0xFF5D4037,
+                                              ),
                                               padding: EdgeInsets.zero,
                                               minimumSize: Size.zero,
                                               tapTargetSize:
@@ -374,7 +382,8 @@ class _LoginPageState extends State<LoginPage>
                                             ),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: AppColors.brandColor
+                                                color: WelcomePageStyles
+                                                    .brandColor
                                                     .withValues(alpha: 0.3),
                                                 blurRadius: 8,
                                                 offset: const Offset(0, 4),
@@ -390,7 +399,7 @@ class _LoginPageState extends State<LoginPage>
                                                         _handleLogin(context)
                                                     : () {},
                                             isLoading: isLoggingIn,
-                                            color: AppColors.brandColor,
+                                            color: WelcomePageStyles.brandColor,
                                             borderRadius: 12,
                                           ),
                                         ),
@@ -417,9 +426,9 @@ class _LoginPageState extends State<LoginPage>
                                     Expanded(
                                       child: Divider(
                                         color: Colors.grey.withValues(
-                                          alpha: 0.3,
+                                          alpha: 0.5,
                                         ),
-                                        thickness: 1,
+                                        thickness: 1.5,
                                       ),
                                     ),
                                     Padding(
@@ -429,18 +438,18 @@ class _LoginPageState extends State<LoginPage>
                                       child: Text(
                                         'Or continue with',
                                         style: GoogleFonts.poppins(
-                                          color: Colors.grey[600],
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
+                                          color: Colors.grey[700],
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       child: Divider(
                                         color: Colors.grey.withValues(
-                                          alpha: 0.3,
+                                          alpha: 0.5,
                                         ),
-                                        thickness: 1,
+                                        thickness: 1.5,
                                       ),
                                     ),
                                   ],
@@ -448,15 +457,15 @@ class _LoginPageState extends State<LoginPage>
 
                                 // Space before social buttons
                                 const SizedBox(
-                                  height: SpacingConstants.spacing5,
+                                  height: SpacingConstants.spacing4,
                                 ),
 
                                 // Social login buttons
                                 Column(
                                   children: [
-                                    FacebookLoginButton(
+                                    AppleLoginButton(
                                       onPressed: () {
-                                        // TODO: Facebook login implementation
+                                        // TODO: Apple login implementation
                                       },
                                     ),
                                     const SizedBox(
@@ -470,9 +479,9 @@ class _LoginPageState extends State<LoginPage>
                                     const SizedBox(
                                       height: SpacingConstants.spacing3,
                                     ),
-                                    AppleLoginButton(
+                                    FacebookLoginButton(
                                       onPressed: () {
-                                        // TODO: Apple login implementation
+                                        // TODO: Facebook login implementation
                                       },
                                     ),
                                   ],

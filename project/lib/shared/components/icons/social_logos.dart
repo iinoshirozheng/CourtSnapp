@@ -55,7 +55,7 @@ class FacebookLogo extends StatelessWidget {
   final double size;
 
   /// Constructor
-  const FacebookLogo({super.key, this.size = 20});
+  const FacebookLogo({super.key, this.size = 24});
 
   @override
   Widget build(BuildContext context) {

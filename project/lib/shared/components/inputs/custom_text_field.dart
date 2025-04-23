@@ -121,6 +121,11 @@ class CustomTextField extends StatelessWidget {
             onSubmitted: onSubmitted,
             style: GoogleFonts.poppins(fontSize: 14, color: Colors.black87),
             cursorColor: showError ? errorColor : brandColor,
+            autocorrect: false,
+            enableSuggestions: false,
+            smartDashesType: SmartDashesType.disabled,
+            smartQuotesType: SmartQuotesType.disabled,
+            textCapitalization: TextCapitalization.none,
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
