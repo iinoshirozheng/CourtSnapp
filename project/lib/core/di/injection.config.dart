@@ -21,10 +21,7 @@ import '../../features/auth/domain/usecases/sign_in_with_email_password_usecase.
     as _i623;
 import '../../features/auth/presentation/bloc/auth/auth_bloc.dart' as _i469;
 import '../../features/auth/presentation/bloc/login/login_bloc.dart' as _i208;
-import '../../features/auth/presentation/viewmodels/welcome_viewmodel.dart'
-    as _i598;
 import '../../shared/bloc/theme/theme_bloc.dart' as _i203;
-import '../../shared/viewmodels/app_view_model_factory.dart' as _i303;
 import '../navigation/app_router.dart' as _i630;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -34,10 +31,8 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    gh.factory<_i598.WelcomeViewModel>(() => _i598.WelcomeViewModel());
     gh.factory<_i203.ThemeBloc>(() => _i203.ThemeBloc());
     gh.singleton<_i630.AppRouter>(() => _i630.AppRouter());
-    gh.singleton<_i303.AppViewModelFactory>(() => _i303.AppViewModelFactory());
     gh.factory<_i107.AuthRemoteDataSource>(
       () => _i107.AuthRemoteDataSourceImpl(),
     );

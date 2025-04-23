@@ -4,7 +4,7 @@ A modern, responsive Flutter application for booking and managing court reservat
 
 ## Architecture
 
-This project follows a Clean Architecture approach with MVVM (Model-View-ViewModel) pattern and BLoC for state management.
+This project follows a Clean Architecture approach with BLoC pattern for state management.
 
 ### Project Structure
 
@@ -16,19 +16,19 @@ lib/
   │   ├── error/               # Error handling
   │   ├── navigation/          # Routing
   │   ├── network/             # Network services
-  │   ├── presentation/        # Presentation layer components
-  │   │   ├── bloc/            # Global blocs
-  │   │   ├── components/      # Reusable UI components
-  │   │   │   ├── buttons/     # Button components
-  │   │   │   ├── cards/       # Card components
-  │   │   │   ├── inputs/      # Input field components
-  │   │   │   ├── layouts/     # Layout components
-  │   │   │   ├── loaders/     # Loading components
-  │   │   │   └── indicators/  # Progress indicators
-  │   │   ├── viewmodels/      # Base view model classes
-  │   │   └── widgets/         # Shared widgets
   │   ├── theme/               # App theming
-  │   └── utils/               # Utility functions
+  │   ├── utils/               # Utility functions
+  │   └── widgets/             # Core UI components
+  │
+  ├── shared/                  # Shared resources across features
+  │   ├── bloc/                # Shared blocs
+  │   └── components/          # Reusable UI components
+  │       ├── buttons/         # Button components
+  │       ├── cards/           # Card components
+  │       ├── inputs/          # Input field components
+  │       ├── layouts/         # Layout components
+  │       ├── loaders/         # Loading components
+  │       └── indicators/      # Progress indicators
   │
   ├── features/                # App features (domains)
   │   ├── auth/                # Authentication feature
@@ -43,7 +43,6 @@ lib/
   │   │   └── presentation/    # Presentation layer
   │   │       ├── bloc/        # Feature-specific blocs
   │   │       ├── pages/       # UI pages
-  │   │       ├── viewmodels/  # View models for MVVM pattern
   │   │       └── widgets/     # Feature-specific widgets
   │   └── [other_features]/    # Other app features
   │
@@ -53,8 +52,7 @@ lib/
 ### Key Architectural Components
 
 - **Clean Architecture**: Separate data, domain, and presentation layers
-- **MVVM Pattern**: Separation of UI (View) from business logic (ViewModel)
-- **BLoC State Management**: Reactive state management with events and states
+- **BLoC Pattern**: Reactive state management with events and states
 - **Dependency Injection**: Using get_it and injectable
 - **Repository Pattern**: Abstract data access
 - **Use Cases**: Encapsulate business logic

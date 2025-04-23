@@ -4,7 +4,7 @@ import 'package:project/features/auth/presentation/pages/login_page_wrapper.dart
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/core/theme/welcome_page_styles.dart';
 import 'package:project/features/auth/presentation/widgets/animated_logo.dart';
-import 'package:project/core/widgets/primary_button.dart';
+import 'package:project/shared/components/buttons/primary_button.dart';
 
 /// 應用的歡迎頁面 - 專業UI設計版
 class WelcomePage extends StatefulWidget {
@@ -172,7 +172,7 @@ class _WelcomePageState extends State<WelcomePage>
                         width: buttonWidth,
                         height: buttonHeight,
                         borderRadius: borderRadius,
-                        backgroundColor: WelcomePageStyles.brandColor,
+                        color: WelcomePageStyles.brandColor,
                         fontSize: screenHeight * 0.02,
                       ),
                     ),

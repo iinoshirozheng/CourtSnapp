@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/core/constants/app_colors.dart';
 import 'package:project/core/constants/spacing_constants.dart';
 import 'package:project/core/di/injection.dart';
-import 'package:project/core/widgets/primary_button.dart';
+import 'package:project/shared/components/buttons/primary_button.dart';
 import 'package:project/core/utils/animation_utils.dart';
 import 'package:project/core/utils/form_validators.dart';
 import 'package:project/features/auth/presentation/bloc/auth/auth_bloc.dart';
@@ -390,8 +390,7 @@ class _LoginPageState extends State<LoginPage>
                                                         _handleLogin(context)
                                                     : () {},
                                             isLoading: isLoggingIn,
-                                            backgroundColor:
-                                                AppColors.brandColor,
+                                            color: AppColors.brandColor,
                                             borderRadius: 12,
                                           ),
                                         ),
