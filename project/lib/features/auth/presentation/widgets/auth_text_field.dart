@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// A custom text field for authentication screens
+/// A specialized text field for authentication forms with styling and
+/// behavior optimized for login, registration and password management screens.
+///
+/// This component is designed specifically for auth screens with appropriate
+/// styling, password visibility toggle, and error handling.
 class AuthTextField extends StatelessWidget {
   /// The controller for the text field
   final TextEditingController controller;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project/features/auth/presentation/widgets/court_logo.dart';
 import 'package:project/features/auth/presentation/pages/login_page_wrapper.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:project/core/theme/welcome_page_styles.dart';
+import 'package:project/features/auth/presentation/theme/welcome_page_styles.dart';
 import 'package:project/features/auth/presentation/widgets/animated_logo.dart';
 import 'package:project/shared/components/buttons/primary_button.dart';
 
