@@ -58,6 +58,10 @@ dependencies:
   bloc: ^9.0.0
   formz: ^0.8.0
   firebase_core: ^3.13.0
+  email_validator: ^3.0.0
+  
+  # Storage
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project/core/di/injection.dart';
 import 'package:project/core/navigation/app_router.dart';
-import 'package:project/core/presentation/bloc/theme/theme_bloc.dart';
+import 'package:project/shared/bloc/theme/theme_bloc.dart';
 import 'package:project/core/theme/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project/firebase_options.dart';

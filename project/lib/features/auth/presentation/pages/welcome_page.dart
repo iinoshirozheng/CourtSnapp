@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:project/features/auth/presentation/widgets/court_logo.dart';
-import 'package:project/features/auth/presentation/pages/login_page.dart';
+import 'package:project/features/auth/presentation/pages/login_page_wrapper.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/core/theme/welcome_page_styles.dart';
 import 'package:project/features/auth/presentation/widgets/animated_logo.dart';
+import 'package:project/core/widgets/primary_button.dart';
 
 /// 應用的歡迎頁面 - 專業UI設計版
 class WelcomePage extends StatefulWidget {
@@ -18,29 +19,12 @@ class WelcomePage extends StatefulWidget {
 
 class _WelcomePageState extends State<WelcomePage>
     with SingleTickerProviderStateMixin {
-  // 預先建立登錄頁面實例，避免首次點擊時的延遲
-  late final LoginPage _loginPage;
-  bool _isPageReady = false;
-  bool _isButtonPressed = false;
-
-  // 在build方法外部預先定義一些不變的元素
-  final loginTransition = MaterialPageRoute<void>;
-
   @override
   void initState() {
     super.initState();
 
-    // 在下一幀預加載登錄頁面
+    // 在下一幀預加載圖片
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // 提前創建LoginPage實例
-      _loginPage = LoginPage(toggleTheme: widget.toggleTheme);
-
-      // 標記為準備好
-      setState(() {
-        _isPageReady = true;
-      });
-
-      // 預先觸發首次佈局，但不顯示
       precacheImage(
         const AssetImage('assets/images/pickleball_court.png'),
         context,
@@ -75,17 +59,14 @@ class _WelcomePageState extends State<WelcomePage>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Illustration
+                      // Illustration - Removed Hero animation
                       AnimatedLogo(
                         floatAmplitude: screenHeight * 0.008,
                         floatPeriod: 2.5,
                         rotationAmplitude: 0.02,
                         pulseAmplitude: 0.02,
                         pulsePeriod: 3.0,
-                        child: Hero(
-                          tag: 'court_logo',
-                          child: CourtLogo(height: logoSize),
-                        ),
+                        child: CourtLogo(height: logoSize),
                       ),
 
                       SizedBox(
@@ -175,70 +156,24 @@ class _WelcomePageState extends State<WelcomePage>
                           ),
                         ],
                       ),
-                      child: ElevatedButton(
-                        // 防止重複點擊按鈕
-                        onPressed:
-                            _isButtonPressed
-                                ? null
-                                : () {
-                                  // 設置狀態避免多次點擊
-                                  setState(() {
-                                    _isButtonPressed = true;
-                                  });
-
-                                  debugPrint('Book a court button pressed');
-
-                                  // 使用預先建立的頁面實例
-                                  if (_isPageReady) {
-                                    Navigator.of(context)
-                                        .push(
-                                          _SmoothSlideUpPageRoute(
-                                            builder: (context) => _loginPage,
-                                          ),
-                                        )
-                                        .then((_) {
-                                          // 恢復按鈕狀態
-                                          if (mounted) {
-                                            setState(() {
-                                              _isButtonPressed = false;
-                                            });
-                                          }
-                                        });
-                                  } else {
-                                    // 備用方案：如果預加載未就緒，則創建新實例
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) => LoginPage(
-                                              toggleTheme: widget.toggleTheme,
-                                            ),
-                                      ),
-                                    ).then((_) {
-                                      // 恢復按鈕狀態
-                                      if (mounted) {
-                                        setState(() {
-                                          _isButtonPressed = false;
-                                        });
-                                      }
-                                    });
-                                  }
-                                },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: WelcomePageStyles.brandColor,
-                          foregroundColor: Colors.white,
-                          minimumSize: Size(buttonWidth, buttonHeight),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(borderRadius),
-                          ),
-                          elevation: 0,
-                          textStyle: TextStyle(
-                            fontSize:
-                                screenHeight * 0.02, // 2% of screen height
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        child: const Text('Book a Court'),
+                      child: PrimaryButton(
+                        onPressed: () {
+                          // 使用向上彈出動畫效果，無左滑特效
+                          Navigator.of(context).push(
+                            _SmoothSlideUpPageRoute(
+                              builder:
+                                  (context) => LoginPageWrapper(
+                                    toggleTheme: widget.toggleTheme,
+                                  ),
+                            ),
+                          );
+                        },
+                        text: 'Book a Court',
+                        width: buttonWidth,
+                        height: buttonHeight,
+                        borderRadius: borderRadius,
+                        backgroundColor: WelcomePageStyles.brandColor,
+                        fontSize: screenHeight * 0.02,
                       ),
                     ),
                   ),
