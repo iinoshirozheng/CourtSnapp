@@ -1,4 +1,4 @@
 /// Barrel file for logging module
-library logging;
+library;
 
 export 'logger.dart';

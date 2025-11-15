@@ -58,7 +58,7 @@ class LoginState extends Equatable {
       isSubmitting: isSubmitting ?? this.isSubmitting,
       showPasswordHints: showPasswordHints ?? this.showPasswordHints,
       status: status ?? this.status,
-      errorMessage: errorMessage != null ? errorMessage : this.errorMessage,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 

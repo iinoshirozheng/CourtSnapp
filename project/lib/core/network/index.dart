@@ -1,5 +1,5 @@
 /// Barrel file for network module
-library network;
+library;
 
 export 'dio_client.dart';
 export 'interceptors/index.dart';

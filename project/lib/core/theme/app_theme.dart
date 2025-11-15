@@ -181,7 +181,7 @@ class AppTheme {
       ),
 
       // 卡片主題
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: colorSurface,
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -401,7 +401,7 @@ class AppTheme {
       ),
 
       // 卡片主題
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: colorDarkSurface,
         elevation: 0,
         shape: RoundedRectangleBorder(

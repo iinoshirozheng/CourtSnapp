@@ -14,7 +14,7 @@ extension ColorExtension on Color {
       red ?? this.red,
       green ?? this.green,
       blue ?? this.blue,
-      alpha ?? this.opacity,
+      alpha ?? opacity,
     );
   }
 }

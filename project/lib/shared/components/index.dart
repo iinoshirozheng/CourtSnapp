@@ -1,5 +1,5 @@
 /// Barrel file exporting all shared components
-library shared_components;
+library;
 
 // Buttons
 export 'buttons/primary_button.dart';
