@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 /// Utility class for animation-related functions and constants
 class AnimationUtils {
-  /// Creates a shake animation controller and animation
+  /// Creates a shake animation controller and animation.
   ///
-  /// @param vsync The TickerProvider to use for the animation
-  /// @return A tuple containing the AnimationController and Animation
+  /// [vsync] is the TickerProvider to use for the animation.
   static ShakeAnimationData createShakeAnimation(TickerProvider vsync) {
     final controller = AnimationController(
       duration: const Duration(milliseconds: 300),
@@ -34,7 +33,7 @@ class ShakeAnimationData {
   /// The AnimationController for the shake effect
   final AnimationController controller;
 
-  /// The resulting Animation<Offset> for the shake effect
+  /// The resulting `Animation<Offset>` for the shake effect
   final Animation<Offset> animation;
 
   /// Constructor

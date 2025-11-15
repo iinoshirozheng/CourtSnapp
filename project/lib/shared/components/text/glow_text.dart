@@ -148,11 +148,14 @@ class _GlowTextState extends State<GlowText>
 // Extension method for color manipulation
 extension ColorExtension on Color {
   Color withValues({double? red, double? green, double? blue, double? alpha}) {
+    int toChannel(double value) =>
+        (value * 255).round().clamp(0, 255).toInt();
+
     return Color.fromARGB(
-      (alpha != null ? alpha * 255 : this.alpha).round(),
-      (red != null ? red * 255 : this.red).round(),
-      (green != null ? green * 255 : this.green).round(),
-      (blue != null ? blue * 255 : this.blue).round(),
+      toChannel(alpha ?? a),
+      toChannel(red ?? r),
+      toChannel(green ?? g),
+      toChannel(blue ?? b),
     );
   }
 }

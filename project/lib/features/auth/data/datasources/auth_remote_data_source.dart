@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:project/features/auth/data/models/user_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class AuthRemoteDataSource {
   /// Signs in user with email and password
@@ -28,10 +29,9 @@ abstract class AuthRemoteDataSource {
 
 @Injectable(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  // TODO: Add Firebase Auth dependency
-  // final FirebaseAuth firebaseAuth;
+  final SupabaseClient _supabaseClient;
 
-  AuthRemoteDataSourceImpl();
+  AuthRemoteDataSourceImpl(this._supabaseClient);
 
   @override
   Future<UserModel> signInWithEmailAndPassword({
@@ -39,27 +39,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String password,
   }) async {
     try {
-      // TODO: Implement with Firebase Auth
-      // final userCredential = await firebaseAuth.signInWithEmailAndPassword(
-      //   email: email,
-      //   password: password,
-      // );
-      //
-      // return UserModel.fromFirebaseUser(userCredential.user!);
-
-      // Mock implementation
-      await Future.delayed(const Duration(seconds: 2));
-
-      // Simulate login validation
-      if (email == 'test@example.com' && password == 'Password123') {
-        return UserModel(
-          id: 'user-id-123',
-          email: email,
-          displayName: 'Test User',
-        );
-      } else {
-        throw Exception('Invalid credentials');
+      final response = await _supabaseClient.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+      final user = response.user;
+      if (user == null) {
+        throw AuthException('User not found after sign in');
       }
+      return UserModel.fromSupabaseUser(user);
+    } on AuthException {
+      rethrow;
     } catch (e) {
       throw Exception('Authentication failed: ${e.toString()}');
     }
@@ -68,9 +58,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> signOut() async {
     try {
-      // TODO: Implement with Firebase Auth
-      // await firebaseAuth.signOut();
-      await Future.delayed(const Duration(seconds: 1));
+      await _supabaseClient.auth.signOut();
+    } on AuthException {
+      rethrow;
     } catch (e) {
       throw Exception('Sign out failed: ${e.toString()}');
     }
@@ -79,9 +69,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<bool> isSignedIn() async {
     try {
-      // TODO: Implement with Firebase Auth
-      // return firebaseAuth.currentUser != null;
-      return false;
+      return _supabaseClient.auth.currentSession != null;
+    } on AuthException {
+      rethrow;
     } catch (e) {
       throw Exception('Error checking auth state: ${e.toString()}');
     }
@@ -90,14 +80,51 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<UserModel?> getCurrentUser() async {
     try {
-      // TODO: Implement with Firebase Auth
-      // final user = firebaseAuth.currentUser;
-      // if (user != null) {
-      //   return UserModel.fromFirebaseUser(user);
-      // }
+      final user = _supabaseClient.auth.currentUser;
+      if (user != null) {
+        return UserModel.fromSupabaseUser(user);
+      }
       return null;
+    } on AuthException {
+      rethrow;
     } catch (e) {
       throw Exception('Error getting current user: ${e.toString()}');
     }
+  }
+}
+
+/// Lightweight mock implementation used when Supabase config is absent.
+class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
+  @override
+  Future<UserModel> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    await Future.delayed(const Duration(seconds: 1));
+    if (email == 'test@example.com' && password == 'Password123') {
+      return UserModel(
+        id: 'user-id-123',
+        email: email,
+        displayName: 'Test User',
+      );
+    }
+    throw AuthException('Invalid login credentials');
+  }
+
+  @override
+  Future<void> signOut() async {
+    await Future.delayed(const Duration(milliseconds: 300));
+  }
+
+  @override
+  Future<bool> isSignedIn() async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    return false;
+  }
+
+  @override
+  Future<UserModel?> getCurrentUser() async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    return null;
   }
 }

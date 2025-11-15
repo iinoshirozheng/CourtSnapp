@@ -154,9 +154,7 @@ class _GlowButtonState extends State<GlowButton> with TickerProviderStateMixin {
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withAlpha(
-                                  51,
-                                ), // 0.2 opacity
+                                color: Colors.black.withValues(alpha: 0.2),
                                 blurRadius: 8,
                                 offset: const Offset(0, 4),
                               ),
@@ -255,7 +253,7 @@ class _GlowButtonState extends State<GlowButton> with TickerProviderStateMixin {
       final spread = maxSpread * pulseValue;
 
       return BoxShadow(
-        color: color.withOpacity(0.3 * hoverIntensity),
+        color: color.withValues(alpha: 0.3 * hoverIntensity),
         blurRadius: 25.0 * hoverIntensity,
         spreadRadius: spread,
       );
@@ -266,11 +264,14 @@ class _GlowButtonState extends State<GlowButton> with TickerProviderStateMixin {
 // Extension method for color manipulation
 extension ColorWithValues on Color {
   Color withValues({double? red, double? green, double? blue, double? alpha}) {
+    int toChannel(double value) =>
+        (value * 255).round().clamp(0, 255).toInt();
+
     return Color.fromARGB(
-      (alpha != null ? alpha * 255 : this.alpha).round(),
-      (red != null ? red * 255 : this.red).round(),
-      (green != null ? green * 255 : this.green).round(),
-      (blue != null ? blue * 255 : this.blue).round(),
+      toChannel(alpha ?? a),
+      toChannel(red ?? r),
+      toChannel(green ?? g),
+      toChannel(blue ?? b),
     );
   }
 }

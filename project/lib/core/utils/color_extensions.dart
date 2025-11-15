@@ -10,11 +10,14 @@ extension ColorExtension on Color {
   /// @param alpha The new alpha value (0.0-1.0)
   /// @return A new Color with the specified values changed
   Color withValues({int? red, int? green, int? blue, double? alpha}) {
+    int clampChannel(double value) =>
+        (value * 255).round().clamp(0, 255).toInt();
+
     return Color.fromRGBO(
-      red ?? this.red,
-      green ?? this.green,
-      blue ?? this.blue,
-      alpha ?? opacity,
+      red ?? clampChannel(r),
+      green ?? clampChannel(g),
+      blue ?? clampChannel(b),
+      alpha ?? a,
     );
   }
 }

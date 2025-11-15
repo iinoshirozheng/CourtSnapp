@@ -1,4 +1,5 @@
 import 'package:project/features/auth/domain/entities/user_entity.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserModel extends UserEntity {
   const UserModel({
@@ -26,13 +27,13 @@ class UserModel extends UserEntity {
     };
   }
 
-  // For Firebase implementation
-  // factory UserModel.fromFirebaseUser(User user) {
-  //   return UserModel(
-  //     id: user.uid,
-  //     email: user.email ?? '',
-  //     displayName: user.displayName,
-  //     photoUrl: user.photoURL,
-  //   );
-  // }
+  factory UserModel.fromSupabaseUser(User user) {
+    final metadata = user.userMetadata ?? <String, dynamic>{};
+    return UserModel(
+      id: user.id,
+      email: user.email ?? '',
+      displayName: metadata['full_name'] as String? ?? user.email,
+      photoUrl: metadata['avatar_url'] as String?,
+    );
+  }
 }

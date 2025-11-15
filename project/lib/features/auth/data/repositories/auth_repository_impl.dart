@@ -4,6 +4,7 @@ import 'package:project/core/error/failures.dart';
 import 'package:project/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:project/features/auth/domain/entities/user_entity.dart';
 import 'package:project/features/auth/domain/repositories/auth_repository.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 @Injectable(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
@@ -22,11 +23,13 @@ class AuthRepositoryImpl implements AuthRepository {
         password: password,
       );
       return Right(userModel);
-    } catch (e) {
-      if (e.toString().contains('Invalid credentials')) {
-        return Left(InvalidCredentialsFailure());
+    } on AuthException catch (e) {
+      if (e.message.toLowerCase().contains('invalid login credentials')) {
+        return const Left(InvalidCredentialsFailure());
       }
-      return Left(ServerFailure());
+      return Left(AuthFailure(message: e.message));
+    } catch (_) {
+      return const Left(ServerFailure());
     }
   }
 
@@ -35,8 +38,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await remoteDataSource.signOut();
       return const Right(null);
-    } catch (e) {
-      return Left(ServerFailure());
+    } on AuthException catch (e) {
+      return Left(AuthFailure(message: e.message));
+    } catch (_) {
+      return const Left(ServerFailure());
     }
   }
 
@@ -45,8 +50,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final isSignedIn = await remoteDataSource.isSignedIn();
       return Right(isSignedIn);
-    } catch (e) {
-      return Left(ServerFailure());
+    } on AuthException catch (e) {
+      return Left(AuthFailure(message: e.message));
+    } catch (_) {
+      return const Left(ServerFailure());
     }
   }
 
@@ -55,8 +62,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final currentUser = await remoteDataSource.getCurrentUser();
       return Right(currentUser);
-    } catch (e) {
-      return Left(ServerFailure());
+    } on AuthException catch (e) {
+      return Left(AuthFailure(message: e.message));
+    } catch (_) {
+      return const Left(ServerFailure());
     }
   }
 }
