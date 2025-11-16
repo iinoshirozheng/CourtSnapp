@@ -6,6 +6,7 @@ import 'package:project/core/navigation/app_router.dart';
 import 'package:project/shared/bloc/theme/theme_bloc.dart';
 import 'package:project/core/theme/app_theme.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,6 +44,17 @@ class MyApp extends StatelessWidget {
             themeMode: themeMode,
             debugShowCheckedModeBanner: false,
             routerConfig: getIt<AppRouter>().router,
+            builder: (context, child) {
+              return ResponsiveBreakpoints.builder(
+                child: child!,
+                breakpoints: const [
+                  Breakpoint(start: 0, end: 449, name: MOBILE),
+                  Breakpoint(start: 450, end: 799, name: TABLET),
+                  Breakpoint(start: 800, end: 1199, name: DESKTOP),
+                  Breakpoint(start: 1200, end: double.infinity, name: 'XL'),
+                ],
+              );
+            },
           );
         },
       ),

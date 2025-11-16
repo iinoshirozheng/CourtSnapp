@@ -66,6 +66,7 @@ dependencies:
   
   # Networking
   dio: ^5.8.0+1
+  responsive_framework: ^1.5.1
 
 dev_dependencies:
   flutter_test:
