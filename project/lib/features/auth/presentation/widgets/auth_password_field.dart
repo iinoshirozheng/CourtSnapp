@@ -53,12 +53,7 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
     super.initState();
 
     // Initialize password validation result
-    _passwordValidation = PasswordValidationResult(
-      hasUppercase: false,
-      hasLetter: false,
-      hasNumber: false,
-      hasMinLength: false,
-    );
+    _passwordValidation = PasswordValidationResult.initial();
 
     // Set up listeners
     widget.controller.addListener(_validatePassword);
@@ -142,7 +137,7 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
           onSubmitted: widget.onSubmitted,
         ),
 
-        // Password requirement hints
+        // Password requirement hints (original style)
         if (showPasswordHints)
           AnimatedOpacity(
             opacity: showPasswordHints ? 1.0 : 0.0,

@@ -18,8 +18,6 @@ import 'package:project/features/auth/presentation/widgets/auth_email_field.dart
 import 'package:project/features/auth/presentation/widgets/auth_error_message.dart';
 import 'package:project/features/auth/presentation/widgets/auth_password_field.dart';
 import 'package:project/features/auth/presentation/widgets/social_login_buttons.dart';
-import 'package:responsive_framework/responsive_framework.dart';
-import 'dart:math' as math;
 
 /// Login page for user authentication
 class LoginPage extends StatefulWidget {
@@ -40,9 +38,10 @@ class _LoginPageState extends State<LoginPage>
 
   // State variables
   bool isEmailValid = false;
-  bool isPasswordValid = false;
   bool isLoggingIn = false;
   bool showLoginError = false;
+  PasswordValidationResult _passwordValidationResult =
+      PasswordValidationResult.initial();
 
   // Focus management
   final FocusNode emailFocus = FocusNode();
@@ -50,8 +49,6 @@ class _LoginPageState extends State<LoginPage>
   final FocusNode loginButtonFocus = FocusNode();
 
   // Animation
-  final double _initialButtonScale = 1.0;
-  double _buttonScale = 1.0;
   late AnimationController _shakeController;
   late Animation<Offset> _shakeAnimation;
 
@@ -75,7 +72,8 @@ class _LoginPageState extends State<LoginPage>
     super.dispose();
   }
 
-  bool get canSubmit => isEmailValid && isPasswordValid && !isLoggingIn;
+  bool get canSubmit =>
+      isEmailValid && _passwordValidationResult.isValid && !isLoggingIn;
 
   void _handleLogin(BuildContext context) {
     if (!canSubmit) {
@@ -100,6 +98,8 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
+    const double horizontalPadding = 32.0;
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (context) => getIt<AuthBloc>()),
@@ -147,249 +147,216 @@ class _LoginPageState extends State<LoginPage>
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: SafeArea(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final breakpoints = ResponsiveBreakpoints.of(context);
-                  final isDesktop = breakpoints.largerThan(TABLET);
-                  final isTablet =
-                      breakpoints.largerThan(MOBILE) && !isDesktop;
-                  final maxWidth = isDesktop
-                      ? 960.0
-                      : isTablet
-                          ? 800.0
-                          : 640.0;
-                  final baseMargin = isDesktop
-                      ? 40.0
-                      : isTablet
-                          ? 28.0
-                          : 20.0;
-                  final contentWidth = math.min(
-                    maxWidth,
-                    constraints.maxWidth - (baseMargin * 2),
-                  );
-                  final horizontalMargin =
-                      (constraints.maxWidth - contentWidth) / 2;
-
-                  return Align(
-                    alignment: Alignment.topCenter,
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      padding: EdgeInsets.only(
-                        left: horizontalMargin,
-                        right: horizontalMargin,
-                        bottom: MediaQuery.of(context).viewInsets.bottom +
-                            SpacingConstants.spacing5,
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.only(
+                  left: horizontalPadding,
+                  right: horizontalPadding,
+                  bottom: MediaQuery.of(context).viewInsets.bottom +
+                      SpacingConstants.spacing5,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: SpacingConstants.spacing7,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Material(
+                            color: Colors.transparent,
+                            shape: const CircleBorder(),
+                            clipBehavior: Clip.antiAlias,
+                            child: InkWell(
+                              onTap: () => Navigator.pop(context),
+                              child: const SizedBox(
+                                height: 44,
+                                width: 44,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: Colors.black87,
+                                    size: 32,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            shape: const CircleBorder(),
+                            clipBehavior: Clip.antiAlias,
+                            child: InkWell(
+                              onTap: () {
+                                // TODO: Show help information
+                              },
+                              child: const SizedBox(
+                                height: 44,
+                                width: 44,
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Icon(
+                                    Icons.help_outline,
+                                    color: Colors.black45,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: contentWidth),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(
-                              height: SpacingConstants.spacing7,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Material(
-                                    color: Colors.transparent,
-                                    shape: const CircleBorder(),
-                                    clipBehavior: Clip.antiAlias,
-                                    child: InkWell(
-                                      onTap: () => Navigator.pop(context),
-                                      child: const SizedBox(
-                                        height: 44,
-                                        width: 44,
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Icon(
-                                            Icons.keyboard_arrow_down,
-                                            color: Colors.black87,
-                                            size: 32,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Material(
-                                    color: Colors.transparent,
-                                    shape: const CircleBorder(),
-                                    clipBehavior: Clip.antiAlias,
-                                    child: InkWell(
-                                      onTap: () {
-                                        // TODO: Show help information
-                                      },
-                                      child: const SizedBox(
-                                        height: 44,
-                                        width: 44,
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Icon(
-                                            Icons.help_outline,
-                                            color: Colors.black45,
-                                            size: 20,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: SpacingConstants.spacing2,
-                                bottom: SpacingConstants.spacing6,
-                              ),
-                              child: Text(
-                                'Back to the Courts!',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black87,
-                                  letterSpacing: -0.5,
-                                  height: 1.2,
-                                ),
-                              ),
-                            ),
-                            Form(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  AuthEmailField(
-                                    controller: emailController,
-                                    focusNode: emailFocus,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        isEmailValid =
-                                            FormValidators.validateEmail(value);
-                                      });
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: SpacingConstants.spacing4,
-                                  ),
-                                  AuthPasswordField(
-                                    controller: passwordController,
-                                    focusNode: passwordFocus,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        isPasswordValid =
-                                            FormValidators.validatePassword(
-                                          value,
-                                        ).isValid;
-                                      });
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: SpacingConstants.spacing2,
-                                  ),
-                                  AuthErrorMessage(
-                                    errorMessage: showLoginError
-                                        ? 'Please check your email and password and try again.'
-                                        : null,
-                                  ),
-                                  const SizedBox(
-                                    height: SpacingConstants.spacing5,
-                                  ),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: BlocBuilder<LoginBloc, LoginState>(
-                                      builder: (context, state) {
-                                        return SlideTransition(
-                                          position: _shakeAnimation,
-                                          child: PrimaryButton(
-                                            onPressed: isLoggingIn
-                                                ? null
-                                                : () => _handleLogin(context),
-                                            text: isLoggingIn
-                                                ? 'Signing in...'
-                                                : 'Login',
-                                            height: 56,
-                                            borderRadius: 16,
-                                            color: WelcomePageStyles.brandColor,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: TextButton(
-                                      onPressed: () {
-                                        // TODO: Forgot password flow
-                                      },
-                                      child: const Text(
-                                        'Forgot your password?',
-                                        style: TextStyle(
-                                          color: Colors.black54,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: SpacingConstants.spacing6),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Divider(
-                                    color: Colors.grey.shade300,
-                                  ),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: SpacingConstants.spacing2,
-                                  ),
-                                  child: Text(
-                                    'or continue with',
-                                    style: TextStyle(
-                                      color: Colors.black54,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Divider(
-                                    color: Colors.grey.shade300,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: SpacingConstants.spacing4),
-                            Column(
-                              children: [
-                                GoogleLoginButton(
-                                  onPressed: () {
-                                    // TODO: Google sign-in
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: SpacingConstants.spacing2,
-                                ),
-                                FacebookLoginButton(
-                                  onPressed: () {
-                                    // TODO: Facebook sign-in
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: SpacingConstants.spacing2,
-                                ),
-                                AppleLoginButton(
-                                  onPressed: () {
-                                    // TODO: Apple sign-in
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: SpacingConstants.spacing2,
+                        bottom: SpacingConstants.spacing6,
+                      ),
+                      child: Text(
+                        'Back to the Courts!',
+                        style: GoogleFonts.poppins(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                          letterSpacing: -0.5,
+                          height: 1.2,
                         ),
                       ),
                     ),
-                  );
-                },
+                    Form(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AuthEmailField(
+                            controller: emailController,
+                            focusNode: emailFocus,
+                            onChanged: (value) {
+                              setState(() {
+                                isEmailValid =
+                                    FormValidators.validateEmail(value);
+                              });
+                            },
+                          ),
+                          const SizedBox(
+                            height: SpacingConstants.spacing4,
+                          ),
+                          AuthPasswordField(
+                            controller: passwordController,
+                            focusNode: passwordFocus,
+                            onChanged: (value) {
+                              setState(() {
+                                _passwordValidationResult =
+                                    FormValidators.validatePassword(value);
+                              });
+                            },
+                          ),
+                          const SizedBox(
+                            height: SpacingConstants.spacing2,
+                          ),
+                          AuthErrorMessage(
+                            errorMessage: showLoginError
+                                ? 'Please check your email and password and try again.'
+                                : null,
+                          ),
+                          const SizedBox(
+                            height: SpacingConstants.spacing5,
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: BlocBuilder<LoginBloc, LoginState>(
+                              builder: (context, state) {
+                                return SlideTransition(
+                                  position: _shakeAnimation,
+                                  child: PrimaryButton(
+                                    onPressed: canSubmit
+                                        ? () => _handleLogin(context)
+                                        : null,
+                                    text: isLoggingIn
+                                        ? 'Signing in...'
+                                        : 'Login',
+                                    isLoading: isLoggingIn,
+                                    height: 56,
+                                    borderRadius: 16,
+                                    color: WelcomePageStyles.brandColor,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: TextButton(
+                              onPressed: () {
+                                // TODO: Forgot password flow
+                              },
+                              child: const Text(
+                                'Forgot your password?',
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: SpacingConstants.spacing6),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            color: Colors.grey.shade300,
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: SpacingConstants.spacing2,
+                          ),
+                          child: Text(
+                            'or continue with',
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.grey.shade300,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: SpacingConstants.spacing4),
+                    Column(
+                      children: [
+                        GoogleLoginButton(
+                          onPressed: () {
+                            // TODO: Google sign-in
+                          },
+                        ),
+                        const SizedBox(
+                          height: SpacingConstants.spacing2,
+                        ),
+                        FacebookLoginButton(
+                          onPressed: () {
+                            // TODO: Facebook sign-in
+                          },
+                        ),
+                        const SizedBox(
+                          height: SpacingConstants.spacing2,
+                        ),
+                        AppleLoginButton(
+                          onPressed: () {
+                            // TODO: Apple sign-in
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

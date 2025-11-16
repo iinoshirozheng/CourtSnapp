@@ -1,15 +1,20 @@
-import 'dart:math' as math; // 保留給 AnimatedLogo 使用
+// 檔案：project/features/auth/presentation/pages/welcome_page.dart
+
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:project/features/auth/presentation/widgets/court_logo.dart';
-import 'package:project/features/auth/presentation/pages/login_page_wrapper.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/core/di/injection.dart';
+import 'package:project/features/auth/presentation/bloc/auth/auth_bloc.dart';
+import 'package:project/features/auth/presentation/bloc/login/login_bloc.dart';
+import 'package:project/features/auth/presentation/pages/login_page_wrapper.dart';
 import 'package:project/features/auth/presentation/theme/welcome_page_styles.dart';
 import 'package:project/features/auth/presentation/widgets/animated_logo.dart';
+import 'package:project/features/auth/presentation/widgets/court_logo.dart';
 import 'package:project/shared/components/buttons/primary_button.dart';
-// import 'package:responsive_framework/responsive_framework.dart'; // 不再需要
+import 'package:flutter_svg/flutter_svg.dart';
 
-/// 應用的歡迎頁面 - 專業UI設計版 (修改為固定寬度佈局)
+/// 應用的歡迎頁面 - 專業UI設計版 (整合了預先快取與 BLoC 預熱)
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key, required this.toggleTheme});
 
@@ -26,38 +31,74 @@ class _WelcomePageState extends State<WelcomePage>
   void initState() {
     super.initState();
 
-    // 在下一幀預加載圖片
+    // 第一幀渲染後開始預載資源與預熱 BLoC
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      precacheImage(
-        const AssetImage('assets/images/pickleball_court.png'),
-        context,
-      );
+      if (!mounted) return;
+      _precacheAssets();
+      _prewarmBlocs();
     });
+  }
+
+  /// 方案 A：預先快取圖片與 SVG
+  void _precacheAssets() {
+    // 預載球場 Logo
+    precacheImage(
+      const AssetImage('assets/images/pickleball_court.png'),
+      context,
+    );
+
+    // 預載並解析 LoginPage 需要的社群登入 SVG Logo
+    final googleLogoLoader = SvgAssetLoader('assets/logos/google-logo.svg');
+    svg.cache.putIfAbsent(
+      googleLogoLoader.cacheKey(context),
+      () => googleLogoLoader.loadBytes(context),
+    );
+
+    final facebookLogoLoader =
+        SvgAssetLoader('assets/logos/facebook-logo.svg');
+    svg.cache.putIfAbsent(
+      facebookLogoLoader.cacheKey(context),
+      () => facebookLogoLoader.loadBytes(context),
+    );
+
+    final appleLogoLoader = SvgAssetLoader('assets/logos/apple-logo.svg');
+    svg.cache.putIfAbsent(
+      appleLogoLoader.cacheKey(context),
+      () => appleLogoLoader.loadBytes(context),
+    );
+  }
+
+  /// 次要方案 A：預先初始化 Blocs
+  void _prewarmBlocs() {
+    try {
+      if (getIt.isRegistered<LoginBloc>()) {
+        getIt<LoginBloc>();
+      }
+      if (getIt.isRegistered<AuthBloc>()) {
+        getIt<AuthBloc>();
+      }
+    } catch (e) {
+      debugPrint("Error pre-warming Blocs: $e");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // --- 變更點：定義固定的大小 ---
-    // 透過固定最大寬度並讓 Logo 依可用高度縮放
-    const double fixedMaxWidth = 520.0; // 內容的最大寬度
-    const double idealLogoSize = 300.0; // Logo 的理想最大高度
-    const double buttonHeight = 52.0; // 按鈕的固定高度 (使用原先的行動版尺寸)
+    const double idealLogoSize = 300.0;
+    const double fixedMaxWidth = 520.0;
+    const double buttonHeight = 52.0;
     const double borderRadius = 16.0;
-    const double horizontalPadding = 24.0; // 兩側的固定內距
-    const double verticalPadding = 24.0; // 頂部和底部的內距
+    const double horizontalPadding = 24.0;
+    const double verticalPadding = 24.0;
 
     return Scaffold(
       body: SafeArea(
-        // --- 變更點：使用 Center 來居中所有內容 ---
         child: Center(
-          // --- 變更點：移除了 SingleChildScrollView ---
-          // --- 變更點：加入 Padding ---
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: horizontalPadding,
               vertical: verticalPadding,
             ),
-            // --- 變更點：使用 ConstrainedBox 設定最大寬度 ---
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: fixedMaxWidth),
               child: Column(
@@ -65,8 +106,6 @@ class _WelcomePageState extends State<WelcomePage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // 頂部間距 (可選，如果 verticalPadding 已足夠，可移除)
-                  // const SizedBox(height: 24),
                   Flexible(
                     child: AnimatedLogo(
                       floatAmplitude: 8.0,
@@ -130,9 +169,8 @@ class _WelcomePageState extends State<WelcomePage>
                   const SizedBox(height: 48),
                   RepaintBoundary(
                     child: Container(
-                      // --- 變更點：寬度設為無限，它會自動填滿 ConstrainedBox 的寬度 ---
                       width: double.infinity,
-                      height: buttonHeight, // 使用固定 buttonHeight
+                      height: buttonHeight,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(borderRadius),
                         boxShadow: [
@@ -152,9 +190,8 @@ class _WelcomePageState extends State<WelcomePage>
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
                             builder: (context) {
-                              final viewInsets = MediaQuery.of(
-                                context,
-                              ).viewInsets.bottom;
+                              final viewInsets =
+                                  MediaQuery.of(context).viewInsets.bottom;
                               return Padding(
                                 padding: EdgeInsets.only(bottom: viewInsets),
                                 child: FractionallySizedBox(
@@ -163,7 +200,7 @@ class _WelcomePageState extends State<WelcomePage>
                                   child: Center(
                                     child: Container(
                                       constraints: const BoxConstraints(
-                                        maxWidth: 520, // 這與我們的 fixedMaxWidth 一致
+                                        maxWidth: 520,
                                       ),
                                       decoration: const BoxDecoration(
                                         color: Colors.white,
@@ -172,17 +209,21 @@ class _WelcomePageState extends State<WelcomePage>
                                         ),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Color.fromRGBO(0, 0, 0, 0.2),
+                                            color: Color.fromRGBO(
+                                              0,
+                                              0,
+                                              0,
+                                              0.2,
+                                            ),
                                             blurRadius: 16,
                                             offset: Offset(0, -4),
                                           ),
                                         ],
                                       ),
                                       child: ClipRRect(
-                                        borderRadius:
-                                            const BorderRadius.vertical(
-                                              top: Radius.circular(24),
-                                            ),
+                                        borderRadius: const BorderRadius.vertical(
+                                          top: Radius.circular(24),
+                                        ),
                                         child: LoginPageWrapper(
                                           toggleTheme: widget.toggleTheme,
                                         ),
@@ -195,9 +236,8 @@ class _WelcomePageState extends State<WelcomePage>
                           );
                         },
                         text: 'Book a Court',
-                        // --- 變更點：寬度設為無限 ---
                         width: double.infinity,
-                        height: buttonHeight, // 使用固定 buttonHeight
+                        height: buttonHeight,
                         borderRadius: borderRadius,
                         color: WelcomePageStyles.brandColor,
                         fontSize: 18,

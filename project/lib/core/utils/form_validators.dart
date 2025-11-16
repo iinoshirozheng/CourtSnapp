@@ -52,6 +52,14 @@ class PasswordValidationResult {
     required this.hasMinLength,
   });
 
+  /// Creates an empty validation result where no requirement is met
+  factory PasswordValidationResult.initial() => const PasswordValidationResult(
+        hasUppercase: false,
+        hasLetter: false,
+        hasNumber: false,
+        hasMinLength: false,
+      );
+
   /// Whether the password is valid (meets all requirements)
   bool get isValid => hasUppercase && hasLetter && hasNumber && hasMinLength;
 }
