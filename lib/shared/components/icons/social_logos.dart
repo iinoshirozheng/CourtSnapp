@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:project/core/constants/asset_constants.dart';
 
 /// A Google logo component
 class GoogleLogo extends StatelessWidget {
@@ -15,7 +16,7 @@ class GoogleLogo extends StatelessWidget {
       width: size,
       height: size,
       child: SvgPicture.asset(
-        'assets/logos/google-logo.svg',
+        AssetConstants.googleLogo,
         width: size,
         height: size,
       ),
@@ -40,7 +41,7 @@ class AppleLogo extends StatelessWidget {
       width: size,
       height: size,
       child: SvgPicture.asset(
-        'assets/logos/apple-logo.svg',
+        AssetConstants.appleLogo,
         width: size,
         height: size,
         colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
@@ -70,7 +71,7 @@ class FacebookLogo extends StatelessWidget {
       width: size,
       height: size,
       child: SvgPicture.asset(
-        'assets/logos/facebook-logo.svg',
+        AssetConstants.facebookLogo,
         width: size,
         height: size,
         colorFilter: ColorFilter.mode(color, BlendMode.srcIn),

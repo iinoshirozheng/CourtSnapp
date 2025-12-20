@@ -8,6 +8,7 @@ import 'package:project/core/di/injection.dart';
 import 'package:project/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:project/features/auth/presentation/bloc/login/login_bloc.dart';
 import 'package:project/features/auth/presentation/pages/login_page_wrapper.dart';
+import 'package:project/core/constants/asset_constants.dart';
 import 'package:project/features/auth/presentation/theme/welcome_page_styles.dart';
 import 'package:project/features/auth/presentation/widgets/animated_logo.dart';
 import 'package:project/features/auth/presentation/widgets/court_logo.dart';
@@ -41,26 +42,30 @@ class _WelcomePageState extends State<WelcomePage>
 
   /// 方案 A：預先快取圖片與 SVG
   void _precacheAssets() {
-    // 預載球場 Logo
+    // 預載球場 Logo (光亮與黑暗版本)
     precacheImage(
-      const AssetImage('assets/images/pickleball_court.png'),
+      const AssetImage(AssetConstants.courtImage),
+      context,
+    );
+    precacheImage(
+      const AssetImage(AssetConstants.courtImageDark),
       context,
     );
 
     // 預載並解析 LoginPage 需要的社群登入 SVG Logo
-    final googleLogoLoader = SvgAssetLoader('assets/logos/google-logo.svg');
+    final googleLogoLoader = SvgAssetLoader(AssetConstants.googleLogo);
     svg.cache.putIfAbsent(
       googleLogoLoader.cacheKey(context),
       () => googleLogoLoader.loadBytes(context),
     );
 
-    final facebookLogoLoader = SvgAssetLoader('assets/logos/facebook-logo.svg');
+    final facebookLogoLoader = SvgAssetLoader(AssetConstants.facebookLogo);
     svg.cache.putIfAbsent(
       facebookLogoLoader.cacheKey(context),
       () => facebookLogoLoader.loadBytes(context),
     );
 
-    final appleLogoLoader = SvgAssetLoader('assets/logos/apple-logo.svg');
+    final appleLogoLoader = SvgAssetLoader(AssetConstants.appleLogo);
     svg.cache.putIfAbsent(
       appleLogoLoader.cacheKey(context),
       () => appleLogoLoader.loadBytes(context),

@@ -18,6 +18,7 @@ import 'package:project/features/auth/presentation/widgets/auth_email_field.dart
 import 'package:project/features/auth/presentation/widgets/auth_error_message.dart';
 import 'package:project/features/auth/presentation/widgets/auth_password_field.dart';
 import 'package:project/features/auth/presentation/widgets/social_login_buttons.dart';
+import 'package:project/features/court_finder/presentation/pages/court_finder_page.dart';
 
 /// Login page for user authentication
 class LoginPage extends StatefulWidget {
@@ -111,8 +112,11 @@ class _LoginPageState extends State<LoginPage>
             setState(() {
               isLoggingIn = false;
             });
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Welcome back to the courts!')),
+            setState(() {
+              isLoggingIn = false;
+            });
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => const CourtFinderPage()),
             );
           } else if (state.status == FormzSubmissionStatus.failure) {
             setState(() {

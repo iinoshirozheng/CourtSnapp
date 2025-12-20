@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project/core/constants/asset_constants.dart';
 
 /// 網球場/羽球場 logo 組件
 ///
@@ -15,7 +16,9 @@ class CourtLogo extends StatelessWidget {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     // 根據當前主題選擇合適的圖片
-    final imagePath = 'assets/images/pickleball_court.png';
+    final imagePath = isDarkMode
+        ? AssetConstants.courtImageDark
+        : AssetConstants.courtImage;
 
     return Stack(
       children: [
