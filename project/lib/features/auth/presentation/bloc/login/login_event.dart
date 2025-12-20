@@ -49,3 +49,16 @@ class LoginWithFacebookPressed extends LoginEvent {
 class LoginWithApplePressed extends LoginEvent {
   const LoginWithApplePressed();
 }
+
+class LoginSuccess extends LoginEvent {
+  const LoginSuccess();
+}
+
+class LoginFailure extends LoginEvent {
+  final String errorMessage;
+
+  const LoginFailure(this.errorMessage);
+
+  @override
+  List<Object> get props => [errorMessage];
+}

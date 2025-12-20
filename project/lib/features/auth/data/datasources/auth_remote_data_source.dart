@@ -11,6 +11,12 @@ abstract class AuthRemoteDataSource {
     required String password,
   });
 
+  /// Signs in user or registers them if account doesn't exist
+  Future<UserModel> signInOrSignUp({
+    required String email,
+    required String password,
+  });
+
   /// Signs out the current user
   ///
   /// Throws a [ServerException] for all error codes
@@ -49,6 +55,40 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
       return UserModel.fromSupabaseUser(user);
     } on AuthException {
+      rethrow;
+    } catch (e) {
+      throw Exception('Authentication failed: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<UserModel> signInOrSignUp({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      // Try to sign up first
+      final signUpResponse = await _supabaseClient.auth.signUp(
+        email: email,
+        password: password,
+      );
+
+      final user = signUpResponse.user;
+      if (user != null) {
+        return UserModel.fromSupabaseUser(user);
+      }
+
+      // If sign up success but no user (e.g. email confirmation required scenario), 
+      // check if we can just sign in or if it's a specific flow.
+      // But for this simplified flow, we assume if signUp succeeds we get a user.
+      throw AuthException('Sign up was successful but user data is missing.');
+
+    } on AuthException catch (e) {
+      // If user already exists, try signing in
+      if (e.message.toLowerCase().contains('already registered') ||
+          e.message.toLowerCase().contains('user already exists')) {
+        return signInWithEmailAndPassword(email: email, password: password);
+      }
       rethrow;
     } catch (e) {
       throw Exception('Authentication failed: ${e.toString()}');
@@ -109,6 +149,27 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
       );
     }
     throw AuthException('Invalid login credentials');
+  }
+
+  @override
+  Future<UserModel> signInOrSignUp({
+    required String email,
+    required String password,
+  }) async {
+    await Future.delayed(const Duration(seconds: 1));
+    if (email == 'test@example.com' && password == 'Password123') {
+      return UserModel(
+        id: 'user-id-123',
+        email: email,
+        displayName: 'Test User',
+      );
+    }
+    // Simulate creating a new user for other credentials
+    return UserModel(
+      id: 'new-user-${DateTime.now().millisecondsSinceEpoch}',
+      email: email,
+      displayName: 'New User',
+    );
   }
 
   @override

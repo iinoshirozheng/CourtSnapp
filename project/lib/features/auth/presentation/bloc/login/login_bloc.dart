@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:injectable/injectable.dart';
@@ -10,6 +11,7 @@ import 'login_state.dart';
 @injectable
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthBloc _authBloc;
+  late StreamSubscription<AuthState> _authSubscription;
 
   LoginBloc({required AuthBloc authBloc})
     : _authBloc = authBloc,
@@ -21,6 +23,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginWithGooglePressed>(_onLoginWithGooglePressed);
     on<LoginWithFacebookPressed>(_onLoginWithFacebookPressed);
     on<LoginWithApplePressed>(_onLoginWithApplePressed);
+    on<LoginSuccess>(_onLoginSuccess);
+    on<LoginFailure>(_onLoginFailure);
+
+    _authSubscription = _authBloc.stream.listen((state) {
+      if (state is AuthAuthenticated) {
+        add(const LoginSuccess());
+      } else if (state is AuthError) {
+        add(LoginFailure(state.message));
+      }
+    });
+  }
+
+  @override
+  Future<void> close() {
+    _authSubscription.cancel();
+    return super.close();
   }
 
   void _onEmailChanged(LoginEmailChanged event, Emitter<LoginState> emit) {
@@ -170,5 +188,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         ),
       );
     }
+  }
+
+  void _onLoginSuccess(LoginSuccess event, Emitter<LoginState> emit) {
+    emit(
+      state.copyWith(
+        status: FormzSubmissionStatus.success,
+        errorMessage: null,
+      ),
+    );
+  }
+
+  void _onLoginFailure(LoginFailure event, Emitter<LoginState> emit) {
+    emit(
+      state.copyWith(
+        status: FormzSubmissionStatus.failure,
+        errorMessage: event.errorMessage,
+      ),
+    );
   }
 }

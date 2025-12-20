@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage>
               isLoggingIn = false;
             });
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Login successful!')),
+              const SnackBar(content: Text('Welcome back to the courts!')),
             );
           } else if (state.status == FormzSubmissionStatus.failure) {
             setState(() {
@@ -128,7 +128,8 @@ class _LoginPageState extends State<LoginPage>
                 title: const Text('Login Error'),
                 content: SelectableText.rich(
                   TextSpan(
-                    text: state.errorMessage ?? 'Authentication failed',
+                    text: state.errorMessage ??
+                        'Unable to sign in or register. Please check your details.',
                     style: TextStyle(color: AppColors.errorColor),
                   ),
                 ),
@@ -273,8 +274,8 @@ class _LoginPageState extends State<LoginPage>
                                         ? () => _handleLogin(context)
                                         : null,
                                     text: isLoggingIn
-                                        ? 'Signing in...'
-                                        : 'Login',
+                                        ? 'Processing...'
+                                        : 'Get Started',
                                     isLoading: isLoggingIn,
                                     height: 56,
                                     borderRadius: 16,
