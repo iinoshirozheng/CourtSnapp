@@ -61,7 +61,7 @@ class _CriteriaChip extends StatelessWidget {
         color: isValid ? validBgColor : invalidBgColor,
         borderRadius: BorderRadius.circular(50),
         border: Border.all(
-          color: isValid ? validColor.withOpacity(0.6) : Colors.transparent,
+          color: isValid ? validColor.withValues(alpha: 0.6) : Colors.transparent,
         ),
       ),
       child: Text(

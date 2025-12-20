@@ -54,8 +54,7 @@ class _WelcomePageState extends State<WelcomePage>
       () => googleLogoLoader.loadBytes(context),
     );
 
-    final facebookLogoLoader =
-        SvgAssetLoader('assets/logos/facebook-logo.svg');
+    final facebookLogoLoader = SvgAssetLoader('assets/logos/facebook-logo.svg');
     svg.cache.putIfAbsent(
       facebookLogoLoader.cacheKey(context),
       () => facebookLogoLoader.loadBytes(context),
@@ -82,192 +81,235 @@ class _WelcomePageState extends State<WelcomePage>
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    const double idealLogoSize = 300.0;
-    const double fixedMaxWidth = 520.0;
+  void _showLoginModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (modalContext) {
+        final viewInsets = MediaQuery.of(modalContext).viewInsets.bottom;
+        return Padding(
+          padding: EdgeInsets.only(bottom: viewInsets),
+          child: FractionallySizedBox(
+            heightFactor: 0.9,
+            alignment: Alignment.bottomCenter,
+            child: Center(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 520),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.2),
+                      blurRadius: 16,
+                      offset: Offset(0, -4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(24),
+                  ),
+                  child: LoginPageWrapper(toggleTheme: widget.toggleTheme),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildLoginLink(BuildContext context) {
+    const baseColor = Color(0xFF666666);
+    const textStyle = TextStyle(
+      fontSize: 16,
+      color: baseColor,
+      fontWeight: FontWeight.w400,
+    );
+
+    return GestureDetector(
+      onTap: () => _showLoginModal(context),
+      behavior: HitTestBehavior.translucent,
+      child: const Padding(
+        padding: EdgeInsets.symmetric(vertical: 12),
+        child: Text.rich(
+          TextSpan(
+            text: 'Already have an account? ',
+            children: [
+              TextSpan(
+                text: 'Login',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: WelcomePageStyles.brandColor,
+                ),
+              ),
+            ],
+            style: textStyle,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
+  /// 底部行動卡片與 CTA
+  Widget _buildActionCard(BuildContext context) {
     const double buttonHeight = 52.0;
     const double borderRadius = 16.0;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 28,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.black.withValues(alpha: 0.05),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+            spreadRadius: -2,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text(
+            'The ultimate court companion',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.25,
+              color: Color(0xFF555555),
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+          RepaintBoundary(
+            child: Container(
+              width: double.infinity,
+              height: buttonHeight,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(borderRadius),
+                boxShadow: [
+                  BoxShadow(
+                    color: WelcomePageStyles.brandColor.withValues(alpha: 0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: PrimaryButton(
+                onPressed: () => _showLoginModal(context),
+                text: 'GET STARTED',
+                width: double.infinity,
+                height: buttonHeight,
+                borderRadius: borderRadius,
+                color: WelcomePageStyles.brandColor,
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    const double idealLogoSize = 360.0;
+    const double fixedMaxWidth = 520.0;
     const double horizontalPadding = 24.0;
     const double verticalPadding = 24.0;
 
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
-              vertical: verticalPadding,
-            ),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: fixedMaxWidth),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: AnimatedLogo(
-                      floatAmplitude: 8.0,
-                      floatPeriod: 2.5,
-                      rotationAmplitude: 0.02,
-                      pulseAmplitude: 0.02,
-                      pulsePeriod: 3.0,
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          final double effectiveLogoSize = math.min(
-                            idealLogoSize,
-                            constraints.maxHeight,
-                          );
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final mediaQuery = MediaQuery.of(context);
+            final safeBottom = mediaQuery.padding.bottom;
+            final logoSize = math.min(
+              idealLogoSize,
+              math.min(constraints.maxWidth * 0.8, constraints.maxHeight * 0.4),
+            );
 
-                          if (effectiveLogoSize <= 0) {
-                            return const SizedBox.shrink();
-                          }
-
-                          return CourtLogo(height: effectiveLogoSize);
-                        },
-                      ),
-                    ),
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: horizontalPadding,
+                    vertical: verticalPadding,
                   ),
-                  const SizedBox(height: 48),
-                  Text(
-                    'COURT SNAPP',
-                    style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: -0.5,
-                        height: 1.1,
-                      ),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Swipe · Snap · Serve',
-                    style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 0.5,
-                        color: Theme.of(context).textTheme.bodyMedium?.color,
-                      ),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'The ultimate court companion',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0.25,
-                      color: Color(0xFF555555),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 48),
-                  RepaintBoundary(
-                    child: Container(
-                      width: double.infinity,
-                      height: buttonHeight,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(borderRadius),
-                        boxShadow: [
-                          BoxShadow(
-                            color: WelcomePageStyles.brandColor.withValues(
-                              alpha: 0.3,
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: fixedMaxWidth),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AnimatedLogo(
+                            floatAmplitude: 8.0,
+                            floatPeriod: 2.5,
+                            rotationAmplitude: 0.02,
+                            pulseAmplitude: 0.02,
+                            pulsePeriod: 3.0,
+                            child: SizedBox(
+                              height: logoSize,
+                              child: CourtLogo(height: logoSize),
                             ),
-                            blurRadius: 8,
-                            offset: const Offset(0, 3),
                           ),
+                          const SizedBox(height: 32),
+                          Text(
+                            'COURT SNAPP',
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: -0.5,
+                                height: 1.1,
+                              ),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'Swipe · Snap · Serve',
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 0.5,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.color,
+                              ),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 32),
+                          _buildActionCard(context),
+                          const SizedBox(height: 20),
+                          _buildLoginLink(context),
+                          SizedBox(height: 32 + safeBottom),
                         ],
                       ),
-                      child: PrimaryButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) {
-                              final viewInsets =
-                                  MediaQuery.of(context).viewInsets.bottom;
-                              return Padding(
-                                padding: EdgeInsets.only(bottom: viewInsets),
-                                child: FractionallySizedBox(
-                                  heightFactor: 0.9,
-                                  alignment: Alignment.bottomCenter,
-                                  child: Center(
-                                    child: Container(
-                                      constraints: const BoxConstraints(
-                                        maxWidth: 520,
-                                      ),
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(24),
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Color.fromRGBO(
-                                              0,
-                                              0,
-                                              0,
-                                              0.2,
-                                            ),
-                                            blurRadius: 16,
-                                            offset: Offset(0, -4),
-                                          ),
-                                        ],
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.vertical(
-                                          top: Radius.circular(24),
-                                        ),
-                                        child: LoginPageWrapper(
-                                          toggleTheme: widget.toggleTheme,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                        text: 'Book a Court',
-                        width: double.infinity,
-                        height: buttonHeight,
-                        borderRadius: borderRadius,
-                        color: WelcomePageStyles.brandColor,
-                        fontSize: 18,
-                      ),
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  GestureDetector(
-                    onTap: () {
-                      debugPrint('Browse courts pressed');
-                    },
-                    behavior: HitTestBehavior.translucent,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Text(
-                        'Browse courts',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFF666666),
-                          fontWeight: FontWeight.w400,
-                          decoration: TextDecoration.underline,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
