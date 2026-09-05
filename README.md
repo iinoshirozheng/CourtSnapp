@@ -1,79 +1,124 @@
+<div align="center">
+
 # Court Snapp
 
-A modern, responsive Flutter application for booking and managing court reservations.
+**A Flutter court-discovery and reservation app built with feature-first Clean Architecture.**
+
+</div>
+
+---
+
+## Overview
+
+Court Snapp is a responsive Flutter application for discovering courts, viewing court details, and building out reservation workflows. The current `main` branch includes authentication flows plus a dedicated court-finder experience with court cards and detail pages.
+
+## Highlights
+
+- **Court finder** with dedicated discovery and court-detail screens.
+- **Authentication flows** with welcome/login routing and social-login UI assets.
+- **Feature-first Clean Architecture** separating data, domain, and presentation concerns.
+- **BLoC state management** with typed events/states.
+- **Dependency injection** through `get_it` and `injectable`.
+- **Declarative navigation** with `go_router`.
+- **Supabase integration**, Dio networking, local preferences, and responsive UI support.
+
+## Quick Start
+
+Requirements: Flutter `>=3.27.0` and Dart SDK compatible with `^3.8.0`.
+
+```bash
+git clone https://github.com/iinoshirozheng/CourtSnapp.git
+cd CourtSnapp
+flutter pub get
+flutter pub run build_runner build --delete-conflicting-outputs
+flutter run
+```
+
+Run the test suite with:
+
+```bash
+flutter test
+```
+
+Build platform packages with Flutter's standard commands, for example:
+
+```bash
+flutter build apk
+flutter build ios
+```
+
+## Current Product Surface
+
+The app is organized around independent feature modules. On `main`, the visible product work includes:
+
+- onboarding / welcome and login flows;
+- court discovery through `court_finder`;
+- reusable court cards;
+- a dedicated court details view;
+- shared navigation, theming, networking, error handling, and reusable UI components.
+
+Dependency-update branches exist in the repository, but their changes are not described here as shipped behavior until they are merged into `main`.
 
 ## Architecture
 
-This project follows a Clean Architecture approach with BLoC pattern for state management.
-
-### Project Structure
-
-```
+```text
 lib/
-  ├── core/                    # Core functionality used across the app
-  │   ├── constants/           # App-wide constants
-  │   ├── di/                  # Dependency injection
-  │   ├── error/               # Error handling
-  │   ├── navigation/          # Routing
-  │   ├── network/             # Network services
-  │   ├── theme/               # App theming
-  │   ├── utils/               # Utility functions
-  │   └── widgets/             # Core UI components
-  │
-  ├── shared/                  # Shared resources across features
-  │   ├── bloc/                # Shared blocs
-  │   └── components/          # Reusable UI components
-  │       ├── buttons/         # Button components
-  │       ├── cards/           # Card components
-  │       ├── inputs/          # Input field components
-  │       ├── layouts/         # Layout components
-  │       ├── loaders/         # Loading components
-  │       └── indicators/      # Progress indicators
-  │
-  ├── features/                # App features (domains)
-  │   ├── auth/                # Authentication feature
-  │   │   ├── data/            # Data layer
-  │   │   │   ├── datasources/ # Data sources
-  │   │   │   ├── models/      # Data models
-  │   │   │   └── repositories/# Repository implementations
-  │   │   ├── domain/          # Domain layer
-  │   │   │   ├── entities/    # Business entities
-  │   │   │   ├── repositories/# Repository interfaces
-  │   │   │   └── usecases/    # Business use cases
-  │   │   └── presentation/    # Presentation layer
-  │   │       ├── bloc/        # Feature-specific blocs
-  │   │       ├── pages/       # UI pages
-  │   │       └── widgets/     # Feature-specific widgets
-  │   └── [other_features]/    # Other app features
-  │
-  └── main.dart                # App entry point
+├── core/
+│   ├── constants/
+│   ├── di/
+│   ├── error/
+│   ├── navigation/
+│   ├── network/
+│   ├── theme/
+│   ├── utils/
+│   └── widgets/
+├── shared/
+│   ├── bloc/
+│   └── components/
+├── features/
+│   ├── auth/
+│   │   ├── data/
+│   │   ├── domain/
+│   │   └── presentation/
+│   └── court_finder/
+│       └── presentation/
+└── main.dart
 ```
 
-### Key Architectural Components
+The project follows these boundaries:
 
-- **Clean Architecture**: Separate data, domain, and presentation layers
-- **BLoC Pattern**: Reactive state management with events and states
-- **Dependency Injection**: Using get_it and injectable
-- **Repository Pattern**: Abstract data access
-- **Use Cases**: Encapsulate business logic
+- **Data** — data sources, transport models, and repository implementations.
+- **Domain** — entities, repository contracts, and use cases.
+- **Presentation** — pages, widgets, and BLoC-driven UI state.
+- **Core / shared** — cross-cutting navigation, DI, networking, themes, and reusable UI.
 
-### Key Packages Used
+## Key Dependencies
 
-- flutter_bloc: State management
-- get_it & injectable: Dependency injection
-- freezed: Immutable state models
-- go_router: Navigation
-- dartz: Functional programming constructs
+| Purpose | Packages |
+|---|---|
+| State management | `flutter_bloc`, `bloc`, `equatable` |
+| Dependency injection | `get_it`, `injectable` |
+| Models / codegen | `freezed`, `json_serializable`, `build_runner` |
+| Navigation | `go_router` |
+| Backend / auth | `supabase_flutter` |
+| Networking | `dio` |
+| Local state | `shared_preferences` |
+| UI | `google_fonts`, `flutter_svg`, `responsive_builder` |
 
-## Getting Started
+## Development
 
-1. Clone the repository
-2. Run `flutter pub get` to install dependencies
-3. Run `flutter pub run build_runner build --delete-conflicting-outputs` to generate code
-4. Run `flutter run` to start the app
+After changing generated models or injectable registrations, regenerate code:
 
-## Development Process
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```
 
-- Code generation: `flutter pub run build_runner build --delete-conflicting-outputs`
-- Tests: `flutter test`
-- Building: `flutter build apk` (Android) or `flutter build ios` (iOS)
+Before committing, run:
+
+```bash
+flutter test
+```
+
+## Project Status
+
+Court Snapp is under active development. This README documents the default `main` branch only; experimental and dependency-update branches are treated as work in progress until merged.
